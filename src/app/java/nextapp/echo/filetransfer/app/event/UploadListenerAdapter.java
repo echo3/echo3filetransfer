@@ -39,7 +39,16 @@ public class UploadListenerAdapter implements UploadListener {
 	public void fileUploadCanceled(UploadCancelEvent e) {
 	}
 
-	public void fileUploadFailed(UploadFailEvent e) {
+	/**
+     * Logs a message to the error console and prints the cause if known.
+	 */
+    public void fileUploadFailed(UploadFailEvent e) {
+        if (e.getException() == null) {
+            System.err.println("File upload failed: cause unknown");
+        } else {
+            System.err.println("File upload failed");
+            e.getException().printStackTrace();
+        }
 	}
 
 	/**
