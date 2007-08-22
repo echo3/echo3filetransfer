@@ -232,13 +232,17 @@ FileTransferRender.ComponentSync.UploadSelect.Frame.prototype._uploadEnded = fun
 		FileTransferRender.ComponentSync.UploadSelect._activeUploads--;
 		FileTransferRender.ComponentSync.UploadSelect._startNextUpload();
 	}
+	var queueEnabled = this.component.getRenderProperty("queueEnabled");
 	peer._removeFrame(this);
-	if (!this.component.getRenderProperty("queueEnabled")) {
+	if (!queueEnabled) {
 		peer._addFrame();
 	}
 };
 
 FileTransferRender.ComponentSync.UploadSelect.Frame.prototype._pollProgress = function() {
+	if (!this._enableProgressPoll) {
+		return;
+	}
     var conn = new EchoWebCore.HttpConnection(this._createProgressUrl(), "GET", null, null);
     conn.addResponseListener(new EchoCore.MethodRef(this, this._processProgressResponse));
     conn.connect();
