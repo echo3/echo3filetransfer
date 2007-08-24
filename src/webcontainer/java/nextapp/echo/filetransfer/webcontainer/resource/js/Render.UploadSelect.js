@@ -105,8 +105,8 @@ FileTransferRender.ComponentSync.UploadSelect.prototype._addFrame = function() {
  * @param frame {FileTransferRender.ComponentSync.UploadSelect.Frame}
  */
 FileTransferRender.ComponentSync.UploadSelect.prototype._removeFrame = function(frame) {
-	frame._dispose();
 	delete this._frames[frame._uploadId];
+	frame._dispose();
 };
 
 /**
