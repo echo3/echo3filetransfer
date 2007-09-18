@@ -257,8 +257,7 @@ FileTransferRender.ComponentSync.UploadSelect.Frame.prototype._processProgressRe
 FileTransferRender.ComponentSync.UploadSelect.Frame.prototype._startProgressPoller = function() {
 	this._enableProgressPoll = true;
 	var interval = this.component.getRenderProperty("progressInterval", FileTransferRender.ComponentSync.UploadSelect._defaultProgressInterval);
-	var task = new EchoCore.Scheduler.Runnable(interval, false, new EchoCore.MethodRef(this, this._pollProgress));
-	EchoCore.Scheduler.add(task);
+	EchoCore.Scheduler.run(new EchoCore.MethodRef(this, this._pollProgress), interval, false);
 };
 
 FileTransferRender.ComponentSync.UploadSelect.Frame.prototype._stopProgressPoller = function() {
