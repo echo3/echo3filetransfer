@@ -52,8 +52,9 @@ public class UploadSelectPeer extends AbstractComponentSynchronizePeer {
 
     private static final String PROPERTY_UPLOAD_INDEX = "uploadIndex";
     
-    private static final Service UPLOAD_SELECT_SERVICE = JavaScriptService.forResource("EchoFileTransfer.UploadSelect",
-            "/nextapp/echo/filetransfer/webcontainer/resource/js/Render.UploadSelect.js");
+    private static final Service UPLOAD_SELECT_SERVICE = JavaScriptService.forResources("EchoFileTransfer.UploadSelect",
+            new String[] {  "/nextapp/echo/filetransfer/webcontainer/resource/js/Application.UploadSelect.js",  
+                            "/nextapp/echo/filetransfer/webcontainer/resource/js/Render.UploadSelect.js"});
     
     static {
     	BlankWindowService.install();
@@ -77,6 +78,13 @@ public class UploadSelectPeer extends AbstractComponentSynchronizePeer {
      */
     public Class getComponentClass() {
         return UploadSelect.class;
+    }
+    
+    /**
+     * @see ComponentSynchronizePeer#getClientComponentType(boolean)
+     */
+    public String getClientComponentType(boolean shortType) {
+        return getComponentClass().getName();
     }
     
     /**

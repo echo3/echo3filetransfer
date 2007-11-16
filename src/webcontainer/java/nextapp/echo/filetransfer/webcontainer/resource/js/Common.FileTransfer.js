@@ -9,6 +9,3 @@ FileTransferSerial.PropertyTranslator = function() {
 
 FileTransferRender = function() {
 };
-
-FileTransferRender.ComponentSync = function() {
-};
