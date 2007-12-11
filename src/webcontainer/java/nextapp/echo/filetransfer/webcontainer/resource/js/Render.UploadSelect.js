@@ -203,13 +203,11 @@ FileTransferRender.UploadSelectSync.Frame = Core.extend({
 		var height = this.component.getRenderProperty("height", FileTransferRender.UploadSelectSync._defaultHeight);
 	   	this._frameElement.style.height = EchoAppRender.Extent.toPixels(height, false) + "px";
 		
-		var processLoadRef = new Core.MethodRef(this, this._processLoad);
+		var processLoad = Core.method(this, this._processLoad);
 		if (WebCore.Environment.BROWSER_INTERNET_EXPLORER) {
-		    WebCore.EventProcessor.add(this._frameElement, "load", processLoadRef, false);
+		    WebCore.EventProcessor.add(this._frameElement, "load", processLoad, false);
 		} else {
-			this._frameElement.onload = function() {
-				processLoadRef.invoke();
-			};
+			this._frameElement.onload = processLoad;
 		}
 		
 		parentElement.appendChild(this._frameElement);
@@ -254,7 +252,7 @@ FileTransferRender.UploadSelectSync.Frame = Core.extend({
 			return;
 		}
 	    var conn = new WebCore.HttpConnection(this._createProgressUrl(), "GET", null, null);
-	    conn.addResponseListener(new Core.MethodRef(this, this._processProgressResponse));
+	    conn.addResponseListener(Core.method(this, this._processProgressResponse));
 	    conn.connect();
 	},
 	
@@ -267,7 +265,7 @@ FileTransferRender.UploadSelectSync.Frame = Core.extend({
 	_startProgressPoller: function() {
 		this._enableProgressPoll = true;
 		var interval = this.component.getRenderProperty("progressInterval", FileTransferRender.UploadSelectSync._defaultProgressInterval);
-		Core.Scheduler.run(new Core.MethodRef(this, this._pollProgress), interval, false);
+		Core.Scheduler.run(Core.method(this, this._pollProgress), interval, false);
 	},
 	
 	_stopProgressPoller: function() {
@@ -291,7 +289,7 @@ FileTransferRender.UploadSelectSync.Frame = Core.extend({
 	    this._loadStage = FileTransferRender.UploadSelectSync._STAGE_QUEUED;
 	    this._formElement.action += "&name=" + fileName;
 	    // remove listener before document gets disposed
-	    WebCore.EventProcessor.remove(this._formElement, "submit", new Core.MethodRef(this, this._processSubmit), false);
+	    WebCore.EventProcessor.remove(this._formElement, "submit", Core.method(this, this._processSubmit), false);
 	    this._submitListenerBound = false;
 		
 		if (this.component.getRenderProperty("queueEnabled")) {
@@ -335,7 +333,7 @@ FileTransferRender.UploadSelectSync.Frame = Core.extend({
 		this._formElement.style.margin = "0px";
 		this._formElement.style.padding = "0px";
 		
-	    WebCore.EventProcessor.add(this._formElement, "submit", new Core.MethodRef(this, this._processSubmit)); 
+	    WebCore.EventProcessor.add(this._formElement, "submit", Core.method(this, this._processSubmit)); 
 		this._submitListenerBound = true;
 		
 		var browseBackgroundImage = this.component.getRenderProperty("browseButtonBackgroundImage");
@@ -494,11 +492,11 @@ FileTransferRender.UploadSelectSync.Frame = Core.extend({
 	_dispose: function() {
 		this._stopProgressPoller();
 		if (this._submitListenerBound) {
-		    WebCore.EventProcessor.remove(this._formElement, "submit", new Core.MethodRef(this, this._processSubmit), false);
+		    WebCore.EventProcessor.remove(this._formElement, "submit", Core.method(this, this._processSubmit), false);
 			this._submitListenerBound = false;
 		}
 		if (WebCore.Environment.BROWSER_INTERNET_EXPLORER) {
-		    WebCore.EventProcessor.remove(this._frameElement, "load", new Core.MethodRef(this, this._processLoad), false);
+		    WebCore.EventProcessor.remove(this._frameElement, "load", Core.method(this, this._processLoad), false);
 		} else {
 			this._frameElement.onload = null;
 		}
