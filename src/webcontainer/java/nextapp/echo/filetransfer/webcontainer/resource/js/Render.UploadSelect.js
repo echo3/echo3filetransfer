@@ -24,8 +24,8 @@ FileTransferRender.UploadSelectSync = Core.extend(EchoRender.ComponentSync, {
 		
 		_defaultProgressInterval: 1000,
 		
-		_defaultHeight: new EchoApp.Extent("50px"),
-		_defaultWidth: new EchoApp.Extent("275px"),
+		_defaultHeight: "50px",
+		_defaultWidth: "275px",
 		
 		_register: function(uploadSelect) {
 			this._uploadSelects.push(uploadSelect);
@@ -50,25 +50,6 @@ FileTransferRender.UploadSelectSync = Core.extend(EchoRender.ComponentSync, {
 					return;
 				}
 			}
-		},
-		
-		/**
-		 * Strips the given file name of any path information.
-		 * 
-		 * @param fileName {String} the file name
-		 * @return the stripped file name.
-		 * @type String
-		 */
-		_stripFileName: function(fileName) {
-			var index = fileName.lastIndexOf('/');
-			if (index != -1) {
-				fileName = fileName.substring(index + 1);
-			}
-			index = fileName.lastIndexOf('\\');
-			if (index != -1) {
-				fileName = fileName.substring(index + 1);
-			}
-			return fileName;
 		}
     },
     
@@ -86,10 +67,10 @@ FileTransferRender.UploadSelectSync = Core.extend(EchoRender.ComponentSync, {
 	renderAdd: function(update, parentElement) {
 		FileTransferRender.UploadSelectSync._register(this);
 		
-		this._uploadId = this.component.getProperty("uploadIndex");
+		this._uploadId = this.component.get("uploadIndex");
 		
 		this._divElement = document.createElement("div");
-		EchoAppRender.Color.renderComponentProperty(this.component, "background", null, this._divElement, "backgroundColor");
+		EchoAppRender.Color.render(this.component.render("background"), this._divElement, "backgroundColor");
 		parentElement.appendChild(this._divElement);
 		
 		this._addFrame();
@@ -197,11 +178,11 @@ FileTransferRender.UploadSelectSync.Frame = Core.extend({
 		this._frameElement.scrolling = "no";
 		this._frameElement.frameBorder = "0";
 		
-		var width = this.component.getRenderProperty("width", FileTransferRender.UploadSelectSync._defaultWidth);
-	   	this._frameElement.style.width = EchoAppRender.Extent.toPixels(width, true) + "px";
+		var width = this.component.render("width", FileTransferRender.UploadSelectSync._defaultWidth);
+	   	this._frameElement.style.width = EchoAppRender.Extent.toCssValue(width, true);
 	   	
-		var height = this.component.getRenderProperty("height", FileTransferRender.UploadSelectSync._defaultHeight);
-	   	this._frameElement.style.height = EchoAppRender.Extent.toPixels(height, false) + "px";
+		var height = this.component.render("height", FileTransferRender.UploadSelectSync._defaultHeight);
+	   	this._frameElement.style.height = EchoAppRender.Extent.toCssValue(height, false);
 		
 		var processLoad = Core.method(this, this._processLoad);
 		if (WebCore.Environment.BROWSER_INTERNET_EXPLORER) {
@@ -220,7 +201,7 @@ FileTransferRender.UploadSelectSync.Frame = Core.extend({
 		this._loadStage = FileTransferRender.UploadSelectSync._STAGE_UPLOADING;
 		this._formElement.submit();
 		
-		if (!this.component.getRenderProperty("queueEnabled")) {
+		if (!this.component.render("queueEnabled")) {
 			if (!WebCore.Environment.BROWSER_SAFARI) {
 				// Safari refuses to upload when file element is disabled
 				this._fileElement.disabled = true;
@@ -240,7 +221,7 @@ FileTransferRender.UploadSelectSync.Frame = Core.extend({
 			FileTransferRender.UploadSelectSync._activeUploads--;
 			FileTransferRender.UploadSelectSync._startNextUpload();
 		}
-		var queueEnabled = this.component.getRenderProperty("queueEnabled");
+		var queueEnabled = this.component.render("queueEnabled");
 		peer._removeFrame(this);
 		if (!queueEnabled) {
 			peer._addFrame();
@@ -264,8 +245,8 @@ FileTransferRender.UploadSelectSync.Frame = Core.extend({
 	
 	_startProgressPoller: function() {
 		this._enableProgressPoll = true;
-		var interval = this.component.getRenderProperty("progressInterval", FileTransferRender.UploadSelectSync._defaultProgressInterval);
-		Core.Scheduler.run(Core.method(this, this._pollProgress), interval, false);
+		var interval = this.component.render("progressInterval", FileTransferRender.UploadSelectSync._defaultProgressInterval);
+		WebCore.Scheduler.run(Core.method(this, this._pollProgress), interval, false);
 	},
 	
 	_stopProgressPoller: function() {
@@ -281,24 +262,22 @@ FileTransferRender.UploadSelectSync.Frame = Core.extend({
 			WebCore.DOM.preventEventDefault(e);
 		}
 		
-		var fileName = FileTransferRender.UploadSelectSync._stripFileName(this._fileElement.value);
-		if (!fileName || fileName == "") {
+		if (!this._fileElement.value || this._fileElement.value == "") {
 			return;
 		}
 	    
 	    this._loadStage = FileTransferRender.UploadSelectSync._STAGE_QUEUED;
-	    this._formElement.action += "&name=" + fileName;
 	    // remove listener before document gets disposed
 	    WebCore.EventProcessor.remove(this._formElement, "submit", Core.method(this, this._processSubmit), false);
 	    this._submitListenerBound = false;
 		
-		if (this.component.getRenderProperty("queueEnabled")) {
+		if (this.component.render("queueEnabled")) {
 			this._frameElement.style.width = "0px";
 			this._frameElement.style.height = "0px";
 			this.component.peer._addFrame();
 		} else if (this._submitElement) {
 			this._submitElement.disabled = true;
-			var text = this.component.getRenderProperty("sendButtonWaitText");
+			var text = this.component.render("sendButtonWaitText");
 			if (text) {
 				this._submitElement.value = text;
 			}
@@ -320,7 +299,7 @@ FileTransferRender.UploadSelectSync.Frame = Core.extend({
 		body.style.border = "none";
 		body.style.margin = "0px";
 		body.style.padding = "0px";
-		EchoAppRender.Color.renderComponentProperty(this.component, "background", null, body, "backgroundColor");
+		EchoAppRender.Color.render(this.component.render("background"), body, "backgroundColor");
 		
 		if (WebCore.Environment.BROWSER_INTERNET_EXPLORER) {
 	        this._formElement = frameDocument.createElement("<form enctype='multipart/form-data'/>");
@@ -336,23 +315,23 @@ FileTransferRender.UploadSelectSync.Frame = Core.extend({
 	    WebCore.EventProcessor.add(this._formElement, "submit", Core.method(this, this._processSubmit)); 
 		this._submitListenerBound = true;
 		
-		var browseBackgroundImage = this.component.getRenderProperty("browseButtonBackgroundImage");
-		var browseRolloverBackgroundImage = this.component.getRenderProperty("browseButtonRolloverBackgroundImage");
-		var browseText = this.component.getRenderProperty("browseButtonText");
-		var browseWidth = this.component.getRenderProperty("browseButtonWidth");
+		var browseBackgroundImage = this.component.render("browseButtonBackgroundImage");
+		var browseRolloverBackgroundImage = this.component.render("browseButtonRolloverBackgroundImage");
+		var browseText = this.component.render("browseButtonText");
+		var browseWidth = this.component.render("browseButtonWidth");
 		var browsePixelWidth;
 		if (browseWidth) {
 			browsePixelWidth = EchoAppRender.Extent.toPixels(browseWidth, true);
 		}
-		var browseHeight = this.component.getRenderProperty("browseButtonHeight");
+		var browseHeight = this.component.render("browseButtonHeight");
 		
 		this._fileElement = frameDocument.createElement("input");
 		this._fileElement.name = this.component.renderId + "_file_" + this._uploadId;
 		this._fileElement.type = "file";
 		
-		var fileSelectorWidth = this.component.getRenderProperty("fileSelectorWidth");
+		var fileSelectorWidth = this.component.render("fileSelectorWidth");
 		if (!fileSelectorWidth) {
-			fileSelectorWidth = this.component.getRenderProperty("width", FileTransferRender.UploadSelectSync._defaultWidth);
+			fileSelectorWidth = this.component.render("width", FileTransferRender.UploadSelectSync._defaultWidth);
 		}
 		var fileSelectorPixelWidth = EchoAppRender.Extent.toPixels(fileSelectorWidth, true);
 		
@@ -398,8 +377,8 @@ FileTransferRender.UploadSelectSync.Frame = Core.extend({
 			var overlayInput = frameDocument.createElement("input");
 			overlayInput.type = "text";
 			overlayInput.style[WebCore.Environment.CSS_FLOAT] = "left";
-			EchoAppRender.Color.renderComponentProperty(this.component, "foreground", null, overlayInput, "color");
-			EchoAppRender.Font.renderDefault(this.component, overlayInput);
+			EchoAppRender.Color.render(this.component.render("foreground"), overlayInput, "color");
+			EchoAppRender.Font.render(this.component.render("font"), overlayInput);
 			overlayFileDiv.appendChild(overlayInput);
 			
 			var overlayBrowse;
@@ -439,37 +418,37 @@ FileTransferRender.UploadSelectSync.Frame = Core.extend({
 			if (browseHeight) {
 				overlayBrowse.style.height = EchoAppRender.Extent.toPixels(browseHeight, false) + "px";
 			}
-			EchoAppRender.Color.renderComponentProperty(this.component, "foreground", null, overlayBrowse, "color");
-			EchoAppRender.Font.renderDefault(this.component, overlayBrowse);
+			EchoAppRender.Color.render(this.component.render("foreground"), overlayBrowse, "color");
+			EchoAppRender.Font.render(this.component.render("font"), overlayBrowse);
 			overlayFileDiv.appendChild(overlayBrowse);
 			outerDiv.appendChild(overlayFileDiv);
 			
 			this._formElement.appendChild(outerDiv);
 		} else {
-			EchoAppRender.Color.renderComponentProperty(this.component, "foreground", null, this._fileElement, "color");
-			EchoAppRender.Font.renderDefault(this.component, this._fileElement);
+			EchoAppRender.Color.render(this.component.render("foreground"), this._fileElement, "color");
+			EchoAppRender.Font.render(this.component.render("font"), this._fileElement);
 			this._formElement.appendChild(this._fileElement);
 		}
 		
-		if (this.component.getRenderProperty("sendButtonDisplayed", true)) {
+		if (this.component.render("sendButtonDisplayed", true)) {
 			this._submitElement = frameDocument.createElement("input");
 			this._submitElement.type = "submit";
 			this._submitElement.style.marginTop = "3px";
-			var sendText = this.component.getRenderProperty("sendButtonText");
+			var sendText = this.component.render("sendButtonText");
 			if (sendText) {
 				this._submitElement.value = sendText;
 			}
-			var sendWidth = this.component.getRenderProperty("sendButtonWidth");
+			var sendWidth = this.component.render("sendButtonWidth");
 			if (sendWidth) {
 				this._submitElement.style.width = EchoAppRender.Extent.toPixels(sendWidth, true) + "px";
 			}
-			var sendHeight = this.component.getRenderProperty("sendButtonHeight");
+			var sendHeight = this.component.render("sendButtonHeight");
 			if (sendHeight) {
 				this._submitElement.style.height = EchoAppRender.Extent.toPixels(sendHeight, false) + "px";
 			}
 			
-			EchoAppRender.Font.renderDefault(this.component, this._submitElement);
-			EchoAppRender.Color.renderComponentProperty(this.component, "foreground", null, this._submitElement, "color");
+			EchoAppRender.Font.render(this.component.render("font"), this._submitElement);
+			EchoAppRender.Color.render(this.component.render("foreground"), this._submitElement, "color");
 			this._formElement.appendChild(this._submitElement);
 		} else {
 			var instance = this;

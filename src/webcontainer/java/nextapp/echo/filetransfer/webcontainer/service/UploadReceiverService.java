@@ -36,7 +36,6 @@ import javax.servlet.http.HttpServletRequest;
 import nextapp.echo.filetransfer.app.UploadProgress;
 import nextapp.echo.filetransfer.app.UploadSelect;
 import nextapp.echo.filetransfer.app.event.UploadFailEvent;
-import nextapp.echo.filetransfer.app.event.UploadStartEvent;
 import nextapp.echo.filetransfer.webcontainer.UploadProviderFactory;
 import nextapp.echo.filetransfer.webcontainer.sync.component.UploadSelectPeer;
 import nextapp.echo.webcontainer.Connection;
@@ -44,7 +43,6 @@ import nextapp.echo.webcontainer.Service;
 import nextapp.echo.webcontainer.WebContainerServlet;
 
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
-import org.apache.commons.io.FilenameUtils;
 
 /**
  * Processes a file upload HTTP request from the client.
@@ -106,7 +104,6 @@ public class UploadReceiverService extends BaseUploadService {
         UploadRenderState renderState = UploadSelectPeer.getRenderState(uploadSelect, conn.getUserInstance());
         UploadProgress progress = new UploadProgress(contentLength);
         renderState.setProgress(uploadIndex, progress);
-        uploadSelect.notifyListener(new UploadStartEvent(uploadSelect, uploadIndex, FilenameUtils.getName(request.getParameter("name"))));
 
         renderState.uploadStarted(uploadIndex);
         try {

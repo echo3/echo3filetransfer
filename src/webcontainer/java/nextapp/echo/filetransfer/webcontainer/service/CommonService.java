@@ -39,7 +39,7 @@ import nextapp.echo.webcontainer.service.JavaScriptService;
 public class CommonService {
 
     public static final Service INSTANCE = JavaScriptService.forResource(
-            "EchoFileTransfer.Common", "/nextapp/echo/filetransfer/webcontainer/resource/js/Common.FileTransfer.js");
+            "EchoFileTransfer.Common", "nextapp/echo/filetransfer/webcontainer/resource/js/Common.FileTransfer.js");
     
     static {
         WebContainerServlet.getServiceRegistry().add(INSTANCE);

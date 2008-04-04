@@ -29,23 +29,25 @@
 
 package nextapp.echo.filetransfer.webcontainer.impl;
 
-import java.util.Iterator;
-
 import nextapp.echo.filetransfer.app.UploadProgress;
 import nextapp.echo.filetransfer.app.UploadSelect;
 import nextapp.echo.filetransfer.app.UploadSizeLimitExceededException;
 import nextapp.echo.filetransfer.app.event.UploadFailEvent;
 import nextapp.echo.filetransfer.app.event.UploadFinishEvent;
+import nextapp.echo.filetransfer.app.event.UploadStartEvent;
 import nextapp.echo.filetransfer.webcontainer.UploadSPI;
 import nextapp.echo.webcontainer.Connection;
 
 import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.FileItemIterator;
+import org.apache.commons.fileupload.FileItemStream;
 import org.apache.commons.fileupload.ProgressListener;
 import org.apache.commons.fileupload.FileUploadBase.FileSizeLimitExceededException;
 import org.apache.commons.fileupload.FileUploadBase.SizeLimitExceededException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.IOUtils;
 
 /**
  * <code>UploadSPI</code> implementation that uses the Jakarta Commons FileUpload library.
@@ -62,23 +64,34 @@ public class JakartaCommonsFileUploadProvider extends AbstractFileUploadProvider
         itemFactory.setRepository(getDiskCacheLocation());
         itemFactory.setSizeThreshold(getMemoryCacheThreshold());
 
+        String encoding = conn.getRequest().getCharacterEncoding();
+        if (encoding == null) {
+            encoding = "UTF-8";
+        }
+        
         ServletFileUpload upload = new ServletFileUpload(itemFactory);
+        upload.setHeaderEncoding(encoding);
         upload.setProgressListener(new UploadProgressListener(progress));
         if (getFileUploadSizeLimit() != NO_SIZE_LIMIT) {
             upload.setSizeMax(getFileUploadSizeLimit());
         }
 
         try {
-            Iterator iter = upload.parseRequest(conn.getRequest()).iterator();
+            FileItemIterator iter = upload.getItemIterator(conn.getRequest());
             if (iter.hasNext()) {
-                FileItem item = (FileItem) iter.next();
-                if (!uploadSelect.isUploadCanceled(uploadIndex)) {
-                    uploadSelect.notifyListener(new UploadFinishEvent(uploadSelect, uploadIndex, FilenameUtils.getName(item
-                            .getName()), item.getInputStream(), item.getSize(), item.getContentType()));
+                FileItemStream stream = iter.next();
+                if (!stream.isFormField()) {
+                    String fileName = FilenameUtils.getName(stream.getName());
+                    uploadSelect.notifyListener(new UploadStartEvent(uploadSelect, uploadIndex, fileName));
+                    FileItem item = itemFactory.createItem(stream.getFieldName(), stream.getContentType(), false, stream.getName());
+                    IOUtils.copy(stream.openStream(), item.getOutputStream());
+                    if (!uploadSelect.isUploadCanceled(uploadIndex)) {
+                        uploadSelect.notifyListener(new UploadFinishEvent(uploadSelect, uploadIndex, fileName, item.getInputStream(), item.getSize(), item.getContentType()));
+                    }
+                    return;
                 }
-            } else {
-                uploadSelect.notifyListener(new UploadFailEvent(uploadSelect, uploadIndex));
             }
+            uploadSelect.notifyListener(new UploadFailEvent(uploadSelect, uploadIndex));
         } catch (SizeLimitExceededException e) {
             uploadSelect.notifyListener(new UploadFailEvent(uploadSelect, uploadIndex, new UploadSizeLimitExceededException(e)));
         } catch (FileSizeLimitExceededException e) {
