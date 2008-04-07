@@ -88,9 +88,10 @@ public class UploadSelectPeer extends AbstractComponentSynchronizePeer {
     }
     
     /**
-     * @see ComponentSynchronizePeer#init(nextapp.echo.app.util.Context)
+     * @see ComponentSynchronizePeer#init(Context, Component)
      */
-    public void init(Context context) {
+    public void init(Context context, Component component) {
+        super.init(context, component);
         ServerMessage serverMessage = (ServerMessage) context.get(ServerMessage.class);
         serverMessage.addLibrary(CommonService.INSTANCE.getId());
         serverMessage.addLibrary(UPLOAD_SELECT_SERVICE.getId());
