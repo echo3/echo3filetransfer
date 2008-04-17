@@ -82,7 +82,7 @@ public class UploadProgressService extends BaseUploadService {
 
         StringBuffer buff = new StringBuffer("<?xml version=\"1.0\"?>");
         buff.append("<p>");
-        if (progress != null) {
+        if (progress != null && progress.getBytesRead() > 0) {
             if (!renderState.isUploadEnded(uploadIndex)) {
                 uploadSelect.notifyListener(new UploadProgressEvent(uploadSelect, uploadIndex, progress));
             }
