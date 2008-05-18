@@ -73,6 +73,18 @@ public class UploadSelectTest extends SplitPane {
             }
         });
 
+        controlsColumn.addButton("Enable Queue", new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                uploadSelect.setQueueEnabled(true);
+            }
+        });
+
+        controlsColumn.addButton("Disable Queue", new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                uploadSelect.setQueueEnabled(false);
+            }
+        });
+
         Column testColumn = new Column();
         add(testColumn);
         
