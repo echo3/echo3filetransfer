@@ -1,12 +1,11 @@
 /**
- * @class UploadSelect component.
- * @base Echo.Component
+ * UploadSelect component.
  */
 FileTransfer.UploadSelect = Core.extend(Echo.Component, {
     
     $load: function() {
-        Echo.ComponentFactory.registerType("nextapp.echo.filetransfer.app.UploadSelect", this);
+        Echo.ComponentFactory.registerType("FileTransfer.UploadSelect", this);
     },
     
-    componentType: "nextapp.echo.filetransfer.app.UploadSelect"
+    componentType: "FileTransfer.UploadSelect"
 });

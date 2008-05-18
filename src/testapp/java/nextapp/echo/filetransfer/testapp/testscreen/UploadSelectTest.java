@@ -29,24 +29,45 @@
 
 package nextapp.echo.filetransfer.testapp.testscreen;
 
-import nextapp.echo.app.Insets;
+import nextapp.echo.app.Extent;
 import nextapp.echo.app.Column;
-import nextapp.echo.app.layout.SplitPaneLayoutData;
+import nextapp.echo.app.SplitPane;
+import nextapp.echo.app.event.ActionEvent;
+import nextapp.echo.app.event.ActionListener;
 import nextapp.echo.filetransfer.app.UploadSelect;
+import nextapp.echo.filetransfer.testapp.ButtonColumn;
+import nextapp.echo.filetransfer.testapp.StyleUtil;
 /**
  * A test for handling of long-running server-interactions.
  */
-public class UploadSelectTest extends Column {
+public class UploadSelectTest extends SplitPane {
+    
+    UploadSelect uploadSelect;
     
     public UploadSelectTest() {
-        super();
+        super(SplitPane.ORIENTATION_HORIZONTAL, new Extent(250, Extent.PX));
+        setStyleName("DefaultResizable");
+
+        ButtonColumn controlsColumn = new ButtonColumn();
+        controlsColumn.setStyleName("TestControlsColumn");
+        add(controlsColumn);
         
-        SplitPaneLayoutData splitPaneLayoutData = new SplitPaneLayoutData();
-        splitPaneLayoutData.setInsets(new Insets(10));
-        setLayoutData(splitPaneLayoutData);
+        controlsColumn.addButton("Set foreground", new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                uploadSelect.setForeground(StyleUtil.randomColor());
+            }
+        });
+
+        controlsColumn.addButton("Set background", new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                uploadSelect.setBackground(StyleUtil.randomColor());
+            }
+        });
+
+        Column testColumn = new Column();
+        add(testColumn);
         
-        UploadSelect uploadSelect = new UploadSelect();
-        
-        add(uploadSelect);
+        uploadSelect = new UploadSelect();
+        testColumn.add(uploadSelect);
     }
 }

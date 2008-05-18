@@ -54,7 +54,7 @@ FileTransfer.Sync.UploadSelect = Core.extend(Echo.Render.ComponentSync, {
     },
     
     $load: function() {
-        Echo.Render.registerPeer("nextapp.echo.filetransfer.app.UploadSelect", this);
+        Echo.Render.registerPeer("FileTransfer.UploadSelect", this);
     },
     
     $construct: function() {
@@ -389,8 +389,12 @@ FileTransfer.Sync.UploadSelect.Frame = Core.extend({
 					Echo.Sync.FillImage.render(browseBackgroundImage, overlayBrowse);
 				}
 				if (browseRolloverBackgroundImage) {
-					this._fileElement.onmouseover = function() {Echo.Sync.FillImage.renderClear(browseRolloverBackgroundImage, overlayBrowse);};
-					this._fileElement.onmouseout = function() {Echo.Sync.FillImage.renderClear(browseBackgroundImage, overlayBrowse);};
+					this._fileElement.onmouseover = function() {
+                        Echo.Sync.FillImage.renderClear(browseRolloverBackgroundImage, overlayBrowse);
+                    };
+					this._fileElement.onmouseout = function() {
+                        Echo.Sync.FillImage.renderClear(browseBackgroundImage, overlayBrowse);
+                    };
 				}
 			} else {
 				overlayBrowse = frameDocument.createElement("button");

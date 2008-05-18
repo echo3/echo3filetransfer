@@ -84,7 +84,7 @@ public class UploadSelectPeer extends AbstractComponentSynchronizePeer {
      * @see ComponentSynchronizePeer#getClientComponentType(boolean)
      */
     public String getClientComponentType(boolean shortType) {
-        return getComponentClass().getName();
+        return "FileTransfer.UploadSelect";
     }
     
     /**
