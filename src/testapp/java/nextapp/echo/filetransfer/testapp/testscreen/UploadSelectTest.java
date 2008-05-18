@@ -29,13 +29,22 @@
 
 package nextapp.echo.filetransfer.testapp.testscreen;
 
+import java.util.TooManyListenersException;
+
 import nextapp.echo.app.Extent;
 import nextapp.echo.app.Column;
 import nextapp.echo.app.SplitPane;
 import nextapp.echo.app.event.ActionEvent;
 import nextapp.echo.app.event.ActionListener;
 import nextapp.echo.filetransfer.app.UploadSelect;
+import nextapp.echo.filetransfer.app.event.UploadCancelEvent;
+import nextapp.echo.filetransfer.app.event.UploadFailEvent;
+import nextapp.echo.filetransfer.app.event.UploadFinishEvent;
+import nextapp.echo.filetransfer.app.event.UploadListener;
+import nextapp.echo.filetransfer.app.event.UploadProgressEvent;
+import nextapp.echo.filetransfer.app.event.UploadStartEvent;
 import nextapp.echo.filetransfer.testapp.ButtonColumn;
+import nextapp.echo.filetransfer.testapp.FTLTestApp;
 import nextapp.echo.filetransfer.testapp.StyleUtil;
 /**
  * A test for handling of long-running server-interactions.
@@ -68,6 +77,37 @@ public class UploadSelectTest extends SplitPane {
         add(testColumn);
         
         uploadSelect = new UploadSelect();
+        try {
+            uploadSelect.addUploadListener(new UploadListener(){
+
+                public void fileUploadStarted(UploadStartEvent e) {
+                    System.err.println("fileUploadStarted");
+                    System.err.println(FTLTestApp.getApp());
+                }
+            
+                public void fileUploadProgressed(UploadProgressEvent e) {
+                    System.err.println("fileUploadProgressed");
+                    System.err.println(FTLTestApp.getApp());
+                }
+            
+                public void fileUploadFinished(UploadFinishEvent e) {
+                    System.err.println("fileUploadFinished");
+                    System.err.println(FTLTestApp.getApp());
+                }
+            
+                public void fileUploadFailed(UploadFailEvent e) {
+                    System.err.println("fileUploadFailed");
+                    System.err.println(FTLTestApp.getApp());
+                }
+            
+                public void fileUploadCanceled(UploadCancelEvent e) {
+                    System.err.println("fileUploadCanceled");
+                    System.err.println(FTLTestApp.getApp());
+                }
+            });
+        } catch (TooManyListenersException ex) {
+            throw new RuntimeException(ex);
+        }
         testColumn.add(uploadSelect);
     }
 }

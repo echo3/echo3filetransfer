@@ -18,7 +18,6 @@ FileTransfer.Sync.UploadSelect = Core.extend(Echo.Render.ComponentSync, {
 		/**
 		 * Service URIs.
 		 */
-		_blankWindowService: "?sid=EchoFileTransfer.BlankWindowService",
 		_progressService: "?sid=EchoFileTransfer.UploadProgressService",
 		_receiverService: "?sid=EchoFileTransfer.UploadReceiverService",
 		
@@ -81,7 +80,7 @@ FileTransfer.Sync.UploadSelect = Core.extend(Echo.Render.ComponentSync, {
 	 */
 	_addFrame: function() {
 		var uploadId = ++this._uploadId;
-		var frame = new FileTransfer.Sync.UploadSelect.Frame(this.component, uploadId);
+		var frame = new FileTransfer.Sync.UploadSelect.Frame(this, uploadId);
 		frame._renderAdd(this._divElement);
 		this._frames[uploadId] = frame;
 	},
@@ -159,8 +158,9 @@ FileTransfer.Sync.UploadSelect.Frame = Core.extend({
 	 * @param component {Echo.Component}
 	 * @param uploadId {Number} the upload index
 	 */
-	$construct: function(component, uploadId) {
-		this.component = component;
+	$construct: function(uploadSelectPeer, uploadId) {
+	    this.uploadSelectPeer = uploadSelectPeer
+		this.component = uploadSelectPeer.component;
 		this._uploadId = uploadId;
 		this._loadStage = null;
 		this._frameElement = null;
@@ -174,7 +174,7 @@ FileTransfer.Sync.UploadSelect.Frame = Core.extend({
 		this._frameElement = document.createElement("iframe");
 		// id needed for Safari, otherwise multiple iframes do not load
 		this._frameElement.id = this.component.renderId + "_frame" + this._uploadId;
-		this._frameElement.src = FileTransfer.Sync.UploadSelect._blankWindowService;
+		this._frameElement.src = this.uploadSelectPeer.client.getResourceUrl("Echo", "resource/Blank.html");
 		this._frameElement.scrolling = "no";
 		this._frameElement.frameBorder = "0";
 		
@@ -491,7 +491,7 @@ FileTransfer.Sync.UploadSelect.Frame = Core.extend({
 			} else if (frameWindow.document && frameWindow.document.execCommand) {
 				frameWindow.document.execCommand("Stop");
 			} else {
-				frameWindow.location.href = FileTransfer.Sync.UploadSelect._blankWindowService;
+				frameWindow.location.href = this.uploadSelectPeer.client.getResourceUrl("Echo", "resource/Blank.html");
 			}
 		}
 		if (Core.Web.Env.BROWSER_MOZILLA) {

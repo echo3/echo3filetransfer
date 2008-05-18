@@ -32,7 +32,6 @@ package nextapp.echo.filetransfer.webcontainer.sync.component;
 import nextapp.echo.app.Component;
 import nextapp.echo.app.util.Context;
 import nextapp.echo.filetransfer.app.UploadSelect;
-import nextapp.echo.filetransfer.webcontainer.service.BlankWindowService;
 import nextapp.echo.filetransfer.webcontainer.service.CommonService;
 import nextapp.echo.filetransfer.webcontainer.service.UploadProgressService;
 import nextapp.echo.filetransfer.webcontainer.service.UploadReceiverService;
@@ -57,10 +56,8 @@ public class UploadSelectPeer extends AbstractComponentSynchronizePeer {
                             "nextapp/echo/filetransfer/webcontainer/resource/js/Render.UploadSelect.js"});
     
     static {
-    	BlankWindowService.install();
         UploadProgressService.install();
         UploadReceiverService.install();
-    	
         WebContainerServlet.getServiceRegistry().add(UPLOAD_SELECT_SERVICE);
     }
     
