@@ -34,7 +34,7 @@ import java.io.IOException;
 /**
  * Adapter class for <code>UploadListener</code>.
  */
-public class UploadListenerAdapter implements UploadListener {
+public class UploadAdapter implements UploadListener {
 
 	public void fileUploadCanceled(UploadCancelEvent e) {
 	}

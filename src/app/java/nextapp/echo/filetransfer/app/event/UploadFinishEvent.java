@@ -52,7 +52,8 @@ public class UploadFinishEvent extends UploadEvent {
 	 * @param size the size of the uploaded file, in bytes
 	 * @param contentType the content type of the uploaded file
 	 */
-	public UploadFinishEvent(UploadSelect source, int index, String fileName, InputStream inputStream, long size, String contentType) {
+	public UploadFinishEvent(UploadSelect source, int index, String fileName, 
+	        InputStream inputStream, long size, String contentType) {
 		super(source, index);
 		this.fileName = fileName;
 		this.inputStream = inputStream;
