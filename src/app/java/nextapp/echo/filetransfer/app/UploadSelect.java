@@ -29,6 +29,8 @@
 
 package nextapp.echo.filetransfer.app;
 
+import java.util.TooManyListenersException;
+
 import nextapp.echo.app.Component;
 import nextapp.echo.app.Extent;
 import nextapp.echo.app.FillImage;
@@ -79,6 +81,22 @@ public class UploadSelect extends Component {
     	this.canceledUploads = new int[0];
 	}
     
+    /**
+     * Adds an <code>UploadListener</code> to be notified of file uploads.
+     * This listener is <strong>unicast</strong>, only one may be added.
+     * 
+     * @param l The listener to add.
+     */
+    public void addUploadListener(UploadListener l) 
+    throws TooManyListenersException {
+        if (uploadListener != null) {
+            throw new TooManyListenersException();
+        } else {
+            uploadListener = l;
+            firePropertyChange(UPLOAD_LISTENER_CHANGED_PROPERTY, null, l);
+        }
+    }
+
     /**
      * Cancels the upload with given index.
      * 
@@ -316,6 +334,19 @@ public class UploadSelect extends Component {
     }
     
     /**
+     * Removes a (the) <code>UploadListener</code> from this 
+     * <code>UploadSelect</code>.
+     * 
+     * @param l The listener to remove.
+     */
+    public void removeUploadListener(UploadListener l) {
+        if (l.equals(uploadListener)) {
+            uploadListener = null;
+        }
+        firePropertyChange(UPLOAD_LISTENER_CHANGED_PROPERTY, l, null);
+    }
+    
+    /**
      * Sets the background image of the browse button.
      * 
      * @param newValue the new background image
@@ -451,16 +482,6 @@ public class UploadSelect extends Component {
     	setProperty(PROPERTY_SEND_BUTTON_WIDTH, newValue);
     }
 
-    /**
-     * Sets the <code>UploadListener</code> to be notified of file uploads.
-     * 
-     * @param l the listener to set
-     */
-    public void setUploadListener(UploadListener l) { 
-    	uploadListener = l;
-        firePropertyChange(UPLOAD_LISTENER_CHANGED_PROPERTY, null, l);
-    }
-    
     /**
 	 * Sets the overall width of the component. Values must be in fixed (i.e.,
 	 * not percent) units.
