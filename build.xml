@@ -62,7 +62,8 @@
     
     <target name="compile.app" description="Compile Application source files">
         <mkdir dir="${dir.build.app}"/>
-        <javac srcdir="${dir.src.app}" destdir="${dir.build.app}" debug="${debug}" deprecation="yes">
+        <javac srcdir="${dir.src.app}" destdir="${dir.build.app}" debug="${debug}" deprecation="yes" 
+                source="${ant.build.javac.source}" target="${ant.build.javac.target}">
         	<classpath>
         		<pathelement path="${echo3.app.lib.jar}"/>
         	 </classpath>
@@ -81,7 +82,8 @@
             
     <target name="compile.webcontainer" depends="compile.app" description="Compile Web Container source files">
         <mkdir dir="${dir.build.webcontainer}"/>
-        <javac srcdir="${dir.src.webcontainer}" destdir="${dir.build.webcontainer}" debug="${debug}" deprecation="yes">
+        <javac srcdir="${dir.src.webcontainer}" destdir="${dir.build.webcontainer}" debug="${debug}" deprecation="yes" 
+                source="${ant.build.javac.source}" target="${ant.build.javac.target}">
             <classpath>
                 <pathelement path="${dir.build.app}"/>
             	<pathelement path="${echo3.webcontainer.lib.jar}"/>
@@ -120,7 +122,8 @@
         <copy todir="${dir.build.testapp}">
             <fileset dir="${dir.htdocs.testapp}"/>
         </copy>
-        <javac srcdir="${dir.src.testapp}" destdir="${dir.build.testapp}/WEB-INF/classes" debug="${debug}" deprecation="yes">
+        <javac srcdir="${dir.src.testapp}" destdir="${dir.build.testapp}/WEB-INF/classes" debug="${debug}" deprecation="yes" 
+                source="${ant.build.javac.source}" target="${ant.build.javac.target}">
             <classpath>
                 <pathelement path="${dir.dist.lib}/${jarfile.ft.app}"/>
                 <pathelement path="${dir.dist.lib}/${jarfile.ft.webcontainer}"/>
