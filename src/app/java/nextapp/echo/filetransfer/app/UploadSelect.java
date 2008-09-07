@@ -131,7 +131,7 @@ public class UploadSelect extends Component {
      * @return the background image.
      */
     public FillImage getBrowseButtonBackgroundImage() {
-        return (FillImage) getProperty(PROPERTY_BROWSE_BUTTON_BACKGROUND_IMAGE);
+        return (FillImage) get(PROPERTY_BROWSE_BUTTON_BACKGROUND_IMAGE);
     }
     
     /**
@@ -140,7 +140,7 @@ public class UploadSelect extends Component {
      * @return the height.
      */
     public Extent getBrowseButtonHeight() {
-    	return (Extent) getProperty(PROPERTY_BROWSE_BUTTON_HEIGHT);
+    	return (Extent) get(PROPERTY_BROWSE_BUTTON_HEIGHT);
     }
 
     /**
@@ -150,7 +150,7 @@ public class UploadSelect extends Component {
      * @return the background image.
      */
     public FillImage getBrowseButtonRolloverBackgroundImage() {
-    	return (FillImage) getProperty(PROPERTY_BROWSE_BUTTON_ROLLOVER_BACKGROUND_IMAGE);
+    	return (FillImage) get(PROPERTY_BROWSE_BUTTON_ROLLOVER_BACKGROUND_IMAGE);
     }
     
     /**
@@ -159,7 +159,7 @@ public class UploadSelect extends Component {
      * @return the text.
      */
     public Extent getBrowseButtonText() {
-    	return (Extent) getProperty(PROPERTY_BROWSE_BUTTON_TEXT);
+    	return (Extent) get(PROPERTY_BROWSE_BUTTON_TEXT);
     }
     
     /**
@@ -168,7 +168,7 @@ public class UploadSelect extends Component {
      * @return the width.
      */
     public Extent getBrowseButtonWidth() {
-    	return (Extent) getProperty(PROPERTY_BROWSE_BUTTON_WIDTH);
+    	return (Extent) get(PROPERTY_BROWSE_BUTTON_WIDTH);
     }
     
     /**
@@ -188,7 +188,7 @@ public class UploadSelect extends Component {
 	 * @return the width.
 	 */
     public Extent getFileSelectorWidth() {
-    	return (Extent)getProperty(PROPERTY_FILE_SELECTOR_WIDTH);
+    	return (Extent)get(PROPERTY_FILE_SELECTOR_WIDTH);
     }
 
     /**
@@ -198,7 +198,7 @@ public class UploadSelect extends Component {
 	 * @return the height.
 	 */
     public Extent getHeight() {
-        Extent value = (Extent)getProperty(PROPERTY_HEIGHT);
+        Extent value = (Extent)get(PROPERTY_HEIGHT);
 		return value != null ? value : DEFAULT_HEIGHT;
     }
     
@@ -209,7 +209,7 @@ public class UploadSelect extends Component {
 	 * @return the interval in milliseconds.
 	 */
     public int getProgessInterval() {
-    	Integer value = (Integer)getProperty(PROPERTY_PROGRESS_INTERVAL);
+    	Integer value = (Integer)get(PROPERTY_PROGRESS_INTERVAL);
 		return value != null ? value.intValue() : DEFAULT_PROGRESS_INTERVAL;
     }
     
@@ -219,7 +219,7 @@ public class UploadSelect extends Component {
      * @return the height.
      */
     public Extent getSendButtonHeight() {
-    	return (Extent) getProperty(PROPERTY_SEND_BUTTON_HEIGHT);
+    	return (Extent) get(PROPERTY_SEND_BUTTON_HEIGHT);
     }
     
     /**
@@ -228,7 +228,7 @@ public class UploadSelect extends Component {
      * @return the text.
      */
     public String getSendButtonText() {
-        return (String)getProperty(PROPERTY_SEND_BUTTON_TEXT);
+        return (String)get(PROPERTY_SEND_BUTTON_TEXT);
     }
     
     /**
@@ -237,7 +237,7 @@ public class UploadSelect extends Component {
      * @return the text.
      */
     public String getSendButtonWaitText() {
-        return (String)getProperty(PROPERTY_SEND_BUTTON_WAIT_TEXT);
+        return (String)get(PROPERTY_SEND_BUTTON_WAIT_TEXT);
     }
     
     /**
@@ -246,7 +246,7 @@ public class UploadSelect extends Component {
      * @return the width.
      */
     public Extent getSendButtonWidth() {
-    	return (Extent) getProperty(PROPERTY_SEND_BUTTON_WIDTH);
+    	return (Extent) get(PROPERTY_SEND_BUTTON_WIDTH);
     }
 
     /**
@@ -265,7 +265,7 @@ public class UploadSelect extends Component {
      * @return the width.
      */
     public Extent getWidth() {
-        Extent value = (Extent)getProperty(PROPERTY_WIDTH);
+        Extent value = (Extent)get(PROPERTY_WIDTH);
 		return value != null ? value : DEFAULT_WIDTH;
     }
     
@@ -278,7 +278,7 @@ public class UploadSelect extends Component {
 	 * @see #setQueueEnabled(boolean)
 	 */
     public boolean isQueueEnabled() {
-    	Boolean enabled = (Boolean)getProperty(PROPERTY_QUEUE_ENABLED);
+    	Boolean enabled = (Boolean)get(PROPERTY_QUEUE_ENABLED);
     	return enabled != null ? enabled.booleanValue() : false;
     }
 
@@ -291,7 +291,7 @@ public class UploadSelect extends Component {
 	 * @see #setSendButtonDisplayed(boolean)
 	 */
     public boolean isSendButtonDisplayed() {
-        Boolean displayed = (Boolean)getProperty(PROPERTY_SEND_BUTTON_DISPLAYED);
+        Boolean displayed = (Boolean)get(PROPERTY_SEND_BUTTON_DISPLAYED);
         return displayed != null ? displayed.booleanValue() : true;
     }
     
@@ -352,7 +352,7 @@ public class UploadSelect extends Component {
      * @param newValue the new background image
      */
     public void setBrowseButtonBackgroundImage(FillImage newValue) {
-        setProperty(PROPERTY_BROWSE_BUTTON_BACKGROUND_IMAGE, newValue);
+        set(PROPERTY_BROWSE_BUTTON_BACKGROUND_IMAGE, newValue);
     }
     
     /**
@@ -362,7 +362,7 @@ public class UploadSelect extends Component {
 	 * @param newValue the new height
 	 */
     public void setBrowseButtonHeight(Extent newValue) {
-    	setProperty(PROPERTY_BROWSE_BUTTON_HEIGHT, newValue);
+    	set(PROPERTY_BROWSE_BUTTON_HEIGHT, newValue);
     }
     
     /**
@@ -372,7 +372,7 @@ public class UploadSelect extends Component {
      * @param newValue the new background image
      */
     public void setBrowseButtonRolloverBackgroundImage(FillImage newValue) {
-    	setProperty(PROPERTY_BROWSE_BUTTON_ROLLOVER_BACKGROUND_IMAGE, newValue);
+    	set(PROPERTY_BROWSE_BUTTON_ROLLOVER_BACKGROUND_IMAGE, newValue);
     }
     
     /**
@@ -381,7 +381,7 @@ public class UploadSelect extends Component {
      * @param newValue the new text
      */
     public void setBrowseButtonText(String newValue) {
-    	setProperty(PROPERTY_BROWSE_BUTTON_TEXT, newValue);
+    	set(PROPERTY_BROWSE_BUTTON_TEXT, newValue);
     }
     
     /**
@@ -391,7 +391,7 @@ public class UploadSelect extends Component {
 	 * @param newValue the new width
 	 */
     public void setBrowseButtonWidth(Extent newValue) {
-    	setProperty(PROPERTY_BROWSE_BUTTON_WIDTH, newValue);
+    	set(PROPERTY_BROWSE_BUTTON_WIDTH, newValue);
     }
 
     /**
@@ -401,7 +401,7 @@ public class UploadSelect extends Component {
 	 * @param newValue the new width value
 	 */
     public void setFileSelectorWidth(Extent newValue) {
-    	setProperty(PROPERTY_FILE_SELECTOR_WIDTH, newValue);
+    	set(PROPERTY_FILE_SELECTOR_WIDTH, newValue);
     }
     
     /**
@@ -411,7 +411,7 @@ public class UploadSelect extends Component {
 	 * @param newValue the new height value
 	 */
     public void setHeight(Extent newValue) {
-        setProperty(PROPERTY_HEIGHT, newValue);
+        set(PROPERTY_HEIGHT, newValue);
     }
 
     /**
@@ -423,7 +423,7 @@ public class UploadSelect extends Component {
     	if (newValue <= 0) {
     		throw new IllegalArgumentException();
     	}
-    	setProperty(PROPERTY_PROGRESS_INTERVAL, new Integer(newValue));
+    	set(PROPERTY_PROGRESS_INTERVAL, new Integer(newValue));
     }
     
     /**
@@ -432,7 +432,7 @@ public class UploadSelect extends Component {
 	 * @param newValue <code>true</code> if queuing is enabled
 	 */
     public void setQueueEnabled(boolean newValue) {
-    	setProperty(PROPERTY_QUEUE_ENABLED, Boolean.valueOf(newValue));
+    	set(PROPERTY_QUEUE_ENABLED, Boolean.valueOf(newValue));
     }
 
     /**
@@ -441,7 +441,7 @@ public class UploadSelect extends Component {
 	 * @param newValue <code>true</code> if the send button is displayed
 	 */
     public void setSendButtonDisplayed(boolean newValue) {
-        setProperty(PROPERTY_SEND_BUTTON_DISPLAYED, Boolean.valueOf(newValue));
+        set(PROPERTY_SEND_BUTTON_DISPLAYED, Boolean.valueOf(newValue));
     }
     
     /**
@@ -451,7 +451,7 @@ public class UploadSelect extends Component {
 	 * @param newValue the new height
 	 */
     public void setSendButtonHeight(Extent newValue) {
-    	setProperty(PROPERTY_SEND_BUTTON_HEIGHT, newValue);
+    	set(PROPERTY_SEND_BUTTON_HEIGHT, newValue);
     }
 
     /**
@@ -460,7 +460,7 @@ public class UploadSelect extends Component {
      * @param newValue the new text
      */
     public void setSendButtonText(String newValue) {
-        setProperty(PROPERTY_SEND_BUTTON_TEXT, newValue);
+        set(PROPERTY_SEND_BUTTON_TEXT, newValue);
     }
 
     /**
@@ -469,7 +469,7 @@ public class UploadSelect extends Component {
 	 * @param newValue the new text
 	 */
     public void setSendButtonWaitText(String newValue) {
-        setProperty(PROPERTY_SEND_BUTTON_WAIT_TEXT, newValue);
+        set(PROPERTY_SEND_BUTTON_WAIT_TEXT, newValue);
     }
     
     /**
@@ -479,7 +479,7 @@ public class UploadSelect extends Component {
      * @param newValue the new width
      */
     public void setSendButtonWidth(Extent newValue) {
-    	setProperty(PROPERTY_SEND_BUTTON_WIDTH, newValue);
+    	set(PROPERTY_SEND_BUTTON_WIDTH, newValue);
     }
 
     /**
@@ -489,6 +489,6 @@ public class UploadSelect extends Component {
 	 * @param newValue the new width value
 	 */
     public void setWidth(Extent newValue) {
-    	setProperty(PROPERTY_WIDTH, newValue);
+    	set(PROPERTY_WIDTH, newValue);
     }
 }
