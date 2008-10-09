@@ -45,6 +45,12 @@
         <include name="**/*stylesheet"/>
     </patternset>
     
+    <patternset id="echo3.resources">
+        <include name="**/*png"/>
+        <include name="**/*gif"/>
+        <include name="**/*xml"/>
+    </patternset>
+    
     <!-- Minimize -->
     <target name="minimize" depends="clean" description="Removes all non-essential files, including Eclipse temporary/build output files">
         <delete dir="${dir.temp}"/>
@@ -135,6 +141,9 @@
         <copy todir="${dir.build.testapp}/WEB-INF/classes">
             <fileset dir="${dir.src.testapp}">
                 <patternset refid="fileset.resources"/>
+            </fileset>
+        	<fileset dir="${echo3.home}/src/server-java/testapp-interactive/lib">
+                <patternset refid="echo3.resources"/>
             </fileset>
         </copy>
     </target>
