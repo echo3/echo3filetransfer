@@ -104,6 +104,7 @@ public class TestPane extends ContentPane {
         controlsColumn.add(testLaunchButtonsColumn);
 
         addTest("Upload Select", "UploadSelectTest");
+        addTest("Download Command", "DownloadCommandTest");
         
         Column applicationControlsColumn = new Column();
         controlsColumn.add(applicationControlsColumn);
