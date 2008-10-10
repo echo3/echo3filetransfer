@@ -42,6 +42,7 @@ import nextapp.echo.filetransfer.app.DownloadProvider;
 
 /**
  * A test for the {@link DownloadCommand}.
+ * @author sgodden
  */
 public class DownloadCommandTest extends Column {
 
