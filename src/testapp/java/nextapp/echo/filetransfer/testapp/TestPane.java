@@ -83,6 +83,7 @@ public class TestPane extends ContentPane {
         super();
         
         SplitPane verticalPane = new SplitPane(SplitPane.ORIENTATION_VERTICAL);
+        verticalPane.setAutoPositioned(true);
         verticalPane.setStyleName("TestPane");
         add(verticalPane);
 
@@ -92,6 +93,7 @@ public class TestPane extends ContentPane {
         
         horizontalPane = new SplitPane(SplitPane.ORIENTATION_HORIZONTAL, new Extent(215));
         horizontalPane.setStyleName("DefaultResizable");
+        horizontalPane.setSeparatorPosition(new Extent(200));
         verticalPane.add(horizontalPane);
         
         Column controlsColumn = new Column();
