@@ -10,6 +10,17 @@ import nextapp.echo.app.RenderIdSupport;
 /**
  * A command instructing the client to download file data from
  * a specified {@link DownloadProvider}.
+ * <p>
+ * <em>Note</em> - each instance of {@link DownloadCommand} may
+ * only be used once.  This is necessary in order to avoid
+ * memory leaks.  You cannot enqueue an instance of this command
+ * more than once.  It will be gone the second time, and will
+ * cause a server error.
+ * </p>
+ * <p>
+ * Therefore, you must create a new instance of this class each
+ * time your button is clicked to trigger the download.
+ * </p>
  * @author sgodden
  *
  */

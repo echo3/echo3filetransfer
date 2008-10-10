@@ -43,7 +43,7 @@ public class DownloadCommandPeer extends AbstractCommandSynchronizePeer {
 				UserInstance userInstance = (UserInstance) context.get(UserInstance.class);
 				String id = download.getRenderId();
 				ID_TO_DOWNLOAD_MAP.put(id, download);
-				String serviceUri = DownloadService.INSTANCE.createUri(userInstance, id);
+				String serviceUri = DownloadService.getInstance().createUri(userInstance, id);
 				return serviceUri;
 			}
 		});
@@ -60,12 +60,19 @@ public class DownloadCommandPeer extends AbstractCommandSynchronizePeer {
 	}
 
 	/**
-	 * Accessor to internal Download Map for Download Service
+	 * Returns the {@link DownloadCommand} having the passed id, and removes
+	 * it from the internal map.
+	 * <p>
+	 * This means that a particular download command cannot be re-used. A new
+	 * download command must be created every time, e.g. each time your download
+	 * button is clicked.
+	 * </p>
+	 * This is necessary to prevent memory leaks.
 	 * 
-	 * @param id
-	 * @return the requested Dounload object
+	 * @param id the download id.
+	 * @return the {@link DownloadCommand} instance.
 	 */
-	public static DownloadCommand getDownload(String id) {
-		return (DownloadCommand) ID_TO_DOWNLOAD_MAP.get(id);
+	public static DownloadCommand getAndRemoveDownload(String id) {
+		return (DownloadCommand) ID_TO_DOWNLOAD_MAP.remove(id);
 	}
 }

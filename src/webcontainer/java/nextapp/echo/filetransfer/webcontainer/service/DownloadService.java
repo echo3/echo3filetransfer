@@ -26,7 +26,7 @@ public class DownloadService implements Service {
 	private static final String SERVICE_ID = "Echo.RemoteClient.CommandExec.Download";
 	private static final String PARAMETER_DOWNLOAD_UID = "duid";
 	private static final String[] URL_PARAMETERS = new String[] { PARAMETER_DOWNLOAD_UID };
-	public static final DownloadService INSTANCE = new DownloadService();
+	private static final DownloadService INSTANCE = new DownloadService();
 
 	/**
 	 * Installs the service in the registry.
@@ -80,7 +80,7 @@ public class DownloadService implements Service {
 			serviceBadRequest(conn, "Download UID not specified.");
 			return;
 		}
-		DownloadCommand download = DownloadCommandPeer.getDownload(downloadId);
+		DownloadCommand download = DownloadCommandPeer.getAndRemoveDownload(downloadId);
 
 		if (download == null) {
 			serviceBadRequest(conn, "Download UID is not valid.");
@@ -127,5 +127,13 @@ public class DownloadService implements Service {
 		conn.getResponse().setStatus(HttpServletResponse.SC_BAD_REQUEST);
 		conn.setContentType(ContentType.TEXT_PLAIN);
 		conn.getWriter().write(message);
+	}
+	
+	/**
+	 * Returns an instance for public use.
+	 * @return an instance for public use.
+	 */
+	public static final DownloadService getInstance() {
+		return INSTANCE;
 	}
 }
