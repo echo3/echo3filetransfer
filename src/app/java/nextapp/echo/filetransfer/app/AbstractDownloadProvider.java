@@ -22,7 +22,7 @@ public abstract class AbstractDownloadProvider implements DownloadProvider, Seri
 	 * Returns -1 as the file data length.
 	 * @return -1
 	 */
-	public int getSize() {
+	public long getSize() {
 		return -1;
 	}
 }

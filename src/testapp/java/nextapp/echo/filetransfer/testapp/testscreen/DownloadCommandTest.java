@@ -80,7 +80,7 @@ public class DownloadCommandTest extends Column {
 			return "TestFile.txt";
 		}
 
-		public int getSize() {
+		public long getSize() {
 			return contents.length;
 		}
 

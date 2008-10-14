@@ -106,7 +106,7 @@ public class DownloadService implements Service {
 			response.setHeader("Content-Disposition", "attachment; filename=\"" + provider.getFileName() + "\"");
 		}
 		if (provider.getSize() > 0) {
-			response.setIntHeader("Content-Length", provider.getSize());
+			response.setHeader("Content-Length", String.valueOf(provider.getSize()));
 		}
 		String contentType = provider.getContentType();
 		if (contentType == null) {

@@ -27,7 +27,7 @@ public interface DownloadProvider {
 	 * Returns the size of the data to be downloaded.
 	 * @return the size of the data to be downloaded.
 	 */
-	public int getSize();
+	public long getSize();
 
 	/**
 	 * Writes the file data to the output stream.
