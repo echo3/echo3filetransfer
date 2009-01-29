@@ -60,10 +60,18 @@ public class UploadReceiverService extends BaseUploadService {
     }
 
     /**
+     * Flag indicating whether service has been installed.
+     */
+    private static boolean installed = false;
+    
+    /**
      * Installs this service.
      */
     public static void install() {
-        WebContainerServlet.setMultipartRequestWrapper(UploadProviderFactory.getUploadProvider());
+        if (!installed) {
+            installed = true;
+            WebContainerServlet.setMultipartRequestWrapper(UploadProviderFactory.getUploadProvider());
+        }
     }
 
     /**

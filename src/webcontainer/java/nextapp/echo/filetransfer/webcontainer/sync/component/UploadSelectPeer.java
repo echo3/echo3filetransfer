@@ -57,7 +57,6 @@ public class UploadSelectPeer extends AbstractComponentSynchronizePeer {
     
     static {
         UploadProgressService.install();
-        UploadReceiverService.install();
         WebContainerServlet.getServiceRegistry().add(UPLOAD_SELECT_SERVICE);
     }
     
@@ -89,6 +88,7 @@ public class UploadSelectPeer extends AbstractComponentSynchronizePeer {
      */
     public void init(Context context, Component component) {
         super.init(context, component);
+        UploadReceiverService.install();
         ServerMessage serverMessage = (ServerMessage) context.get(ServerMessage.class);
         serverMessage.addLibrary(CommonService.INSTANCE.getId());
         serverMessage.addLibrary(UPLOAD_SELECT_SERVICE.getId());
