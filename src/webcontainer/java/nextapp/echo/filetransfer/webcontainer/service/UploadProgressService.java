@@ -76,7 +76,8 @@ public class UploadProgressService extends BaseUploadService {
         return DO_NOT_CACHE;
     }
 
-    public void service(Connection conn, UploadSelect uploadSelect, int uploadIndex) throws IOException {
+    public void service(Connection conn, UploadSelect uploadSelect, int uploadIndex)
+    throws IOException {
         UploadRenderState renderState = UploadSelectPeer.getRenderState(uploadSelect, conn.getUserInstance());
         UploadProgress progress = renderState.getProgress(uploadIndex);
 
