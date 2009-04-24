@@ -38,13 +38,13 @@ import java.util.LinkedList;
  */
 public class UploadProgress {
 	/**
-	 * The minimum number of milestones required for calculation of the tranfer
+	 * The minimum number of milestones required for calculation of the transfer
 	 * rate.
 	 */
 	private static final int MINIMUM_MILESTONE_COUNT = 2;
 	/**
 	 * The maximum number of milestones that should be kept for calculation of
-	 * the tranfer rate.
+	 * the transfer rate.
 	 */
 	private static final int MAXIMUM_MILESTONE_COUNT = 10;
     /**
