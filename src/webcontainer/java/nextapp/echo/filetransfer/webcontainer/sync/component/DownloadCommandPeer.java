@@ -17,11 +17,14 @@ import nextapp.echo.webcontainer.service.JavaScriptService;
 
 /**
  * Synchronize peer for {@link DownloadCommand}.
+ * 
  * @author sgodden
- *
  */
 public class DownloadCommandPeer extends AbstractCommandSynchronizePeer {
 
+    /**
+     * Mapping between download render identifiers (Strings) and <code>DownloadComand</code>s. 
+     */
     private static final Map ID_TO_DOWNLOAD_MAP = Collections.synchronizedMap(new HashMap());
 
     private static final Service DOWNLOAD_SERVICE = JavaScriptService.forResource("Echo.Download",
@@ -32,6 +35,9 @@ public class DownloadCommandPeer extends AbstractCommandSynchronizePeer {
         WebContainerServlet.getServiceRegistry().add(DOWNLOAD_SERVICE);
     }
 
+    /**
+     * Creates a new <code>DownlaodCommandPeer</code>.
+     */
     public DownloadCommandPeer() {
         super();
         addProperty("uri", new AbstractCommandSynchronizePeer.PropertyPeer() {
@@ -49,12 +55,9 @@ public class DownloadCommandPeer extends AbstractCommandSynchronizePeer {
         });
     }
 
-    public void init(Context context) {
-        super.init(context);
-        ServerMessage serverMessage = (ServerMessage) context.get(ServerMessage.class);
-        serverMessage.addLibrary(DOWNLOAD_SERVICE.getId());
-    }
-
+    /**
+     * @see nextapp.echo.webcontainer.CommandSynchronizePeer#getCommandClass()
+     */
     public Class getCommandClass() {
         return DownloadCommand.class;
     }
@@ -74,5 +77,14 @@ public class DownloadCommandPeer extends AbstractCommandSynchronizePeer {
      */
     public static DownloadCommand getAndRemoveDownload(String id) {
         return (DownloadCommand) ID_TO_DOWNLOAD_MAP.remove(id);
+    }
+
+    /**
+     * @see nextapp.echo.webcontainer.AbstractCommandSynchronizePeer#init(nextapp.echo.app.util.Context)
+     */
+    public void init(Context context) {
+        super.init(context);
+        ServerMessage serverMessage = (ServerMessage) context.get(ServerMessage.class);
+        serverMessage.addLibrary(DOWNLOAD_SERVICE.getId());
     }
 }
