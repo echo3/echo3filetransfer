@@ -2,7 +2,7 @@
 
 <!--
  * This file is part of the Echo File Transfer Project.
- * Copyright (C) 2005-2007 NextApp, Inc.
+ * Copyright (C) 2005-2009 NextApp, Inc.
  *
  * Version: MPL 1.1/GPL 2.0/LGPL 2.1
  *
@@ -41,6 +41,7 @@
         <include name="**/*gif"/>
         <include name="**/*jpg"/>
         <include name="**/*png"/>
+        <include name="**/*swf"/>
         <include name="**/*xml"/>
         <include name="**/*stylesheet"/>
     </patternset>
@@ -52,7 +53,8 @@
     </patternset>
     
     <!-- Minimize -->
-    <target name="minimize" depends="clean" description="Removes all non-essential files, including Eclipse temporary/build output files">
+    <target name="minimize" depends="clean" 
+            description="Removes all non-essential files, including Eclipse temporary/build output files">
         <delete dir="${dir.temp}"/>
     </target>
     
@@ -66,16 +68,57 @@
         <delete dir="${dir.release}"/>
     </target>
     
-    <target name="compile.app" description="Compile Application source files">
-        <mkdir dir="${dir.build.app}"/>
-        <javac srcdir="${dir.src.app}" destdir="${dir.build.app}" debug="${debug}" deprecation="yes" 
-                source="${ant.build.javac.source}" target="${ant.build.javac.target}">
-        	<classpath>
-        		<pathelement path="${echo3.app.lib.jar}"/>
-        	 </classpath>
-    	</javac>
-        <copy todir="${dir.build.app}">
-            <fileset dir="${dir.src.app}">
+    <target name="compile.model" description="Compile model source files">
+        <mkdir dir="${dir.build.server-java.model}"/>
+        <javac srcdir="${dir.src.server-java.model}" destdir="${dir.build.server-java.model}" 
+                debug="${debug}" deprecation="yes" source="${ant.build.javac.source}" target="${ant.build.javac.target}">
+        </javac>
+        <copy todir="${dir.build.server-java.model}">
+            <fileset dir="${dir.src.server-java.model}">
+                <patternset refid="fileset.resources"/>
+            </fileset>
+        </copy>
+    </target>
+    
+    <target name="dist.model" depends="compile.model">
+        <mkdir dir="${dir.dist.lib}"/>
+        <jar jarfile="${dir.dist.lib}/${jarfile.filetransfer.model}" basedir="${dir.build.server-java.model}"/>
+    </target>
+    
+    <target name="compile.receiver" depends="compile.model" description="Compile receiver source files">
+        <mkdir dir="${dir.build.server-java.receiver}"/>
+        <javac srcdir="${dir.src.server-java.receiver}" destdir="${dir.build.server-java.receiver}" 
+                debug="${debug}" deprecation="yes" source="${ant.build.javac.source}" target="${ant.build.javac.target}">
+            <classpath>
+                <pathelement path="${dir.build.server-java.model}"/>
+                <pathelement path="${servlet.lib.jar}"/>
+                <pathelement path="${filetransfer.commons-io.lib.jar}"/>
+                <pathelement path="${filetransfer.commons-fileupload.lib.jar}"/>
+            </classpath>
+        </javac>
+        <copy todir="${dir.build.server-java.receiver}">
+            <fileset dir="${dir.src.server-java.receiver}">
+                <patternset refid="fileset.resources"/>
+            </fileset>
+        </copy>
+    </target>
+    
+    <target name="dist.receiver" depends="compile.receiver">
+        <mkdir dir="${dir.dist.lib}"/>
+        <jar jarfile="${dir.dist.lib}/${jarfile.filetransfer.receiver}" basedir="${dir.build.server-java.receiver}"/>
+    </target>
+    
+    <target name="compile.app" depends="compile.model" description="Compile Application source files">
+        <mkdir dir="${dir.build.server-java.app}"/>
+        <javac srcdir="${dir.src.server-java.app}" destdir="${dir.build.server-java.app}" 
+                debug="${debug}" deprecation="yes" source="${ant.build.javac.source}" target="${ant.build.javac.target}">
+            <classpath>
+                <pathelement path="${echo3.app.lib.jar}"/>
+                <pathelement path="${dir.build.server-java.model}"/>
+             </classpath>
+        </javac>
+        <copy todir="${dir.build.server-java.app}">
+            <fileset dir="${dir.src.server-java.app}">
                 <patternset refid="fileset.resources"/>
             </fileset>
         </copy>
@@ -83,24 +126,31 @@
     
     <target name="dist.app" depends="clean,compile.app">
         <mkdir dir="${dir.dist.lib}"/>
-        <jar jarfile="${dir.dist.lib}/${jarfile.ft.app}" basedir="${dir.build.app}"/>
+        <jar jarfile="${dir.dist.lib}/${jarfile.filetransfer.app}" basedir="${dir.build.server-java.app}"/>
     </target>
             
-    <target name="compile.webcontainer" depends="compile.app" description="Compile Web Container source files">
-        <mkdir dir="${dir.build.webcontainer}"/>
-        <javac srcdir="${dir.src.webcontainer}" destdir="${dir.build.webcontainer}" debug="${debug}" deprecation="yes" 
-                source="${ant.build.javac.source}" target="${ant.build.javac.target}">
+    <target name="compile.webcontainer" depends="compile.app,compile.receiver" description="Compile Web Container source files">
+        <mkdir dir="${dir.build.server-java.webcontainer}"/>
+        <javac srcdir="${dir.src.server-java.webcontainer}" destdir="${dir.build.server-java.webcontainer}" 
+                debug="${debug}" deprecation="yes" source="${ant.build.javac.source}" target="${ant.build.javac.target}">
             <classpath>
-                <pathelement path="${dir.build.app}"/>
-            	<pathelement path="${echo3.webcontainer.lib.jar}"/>
-            	<pathelement path="${echo3.app.lib.jar}"/>
+                <pathelement path="${dir.build.server-java.model}"/>
+                <pathelement path="${dir.build.server-java.receiver}"/>
+                <pathelement path="${dir.build.server-java.app}"/>
+                <pathelement path="${echo3.webcontainer.lib.jar}"/>
+                <pathelement path="${echo3.app.lib.jar}"/>
                 <pathelement path="${servlet.lib.jar}"/>
-                <pathelement path="${ft.commons-io.lib.jar}"/>
-                <pathelement path="${ft.commons-fileupload.lib.jar}"/>
+                <pathelement path="${filetransfer.commons-io.lib.jar}"/>
+                <pathelement path="${filetransfer.commons-fileupload.lib.jar}"/>
             </classpath>
         </javac>
-        <copy todir="${dir.build.webcontainer}">
-            <fileset dir="${dir.src.webcontainer}">
+        <copy todir="${dir.build.server-java.webcontainer}">
+            <fileset dir="${dir.src.server-java.webcontainer}">
+                <patternset refid="fileset.resources"/>
+            </fileset>
+        </copy>
+        <copy todir="${dir.build.server-java.webcontainer.res}">
+            <fileset dir="${dir.src.client.filetransfer}">
                 <patternset refid="fileset.resources"/>
             </fileset>
         </copy>
@@ -108,42 +158,46 @@
     
     <target name="dist.webcontainer" depends="clean,compile.webcontainer">
         <mkdir dir="${dir.dist.lib}"/>
-        <jar jarfile="${dir.dist.lib}/${jarfile.ft.webcontainer}" basedir="${dir.build.webcontainer}"/>
+        <jar jarfile="${dir.dist.lib}/${jarfile.filetransfer.webcontainer}" basedir="${dir.build.server-java.webcontainer}"/>
     </target>
         
-    <target name="dist" depends="clean, dist.app, dist.webcontainer"/>
+    <target name="dist" depends="clean, dist.model,dist.receiver,dist.app, dist.webcontainer"/>
 	
     <target name="compile.testapp" depends="dist">
-        <mkdir dir="${dir.build.testapp}/WEB-INF/classes"/>
-        <mkdir dir="${dir.build.testapp}/WEB-INF/lib"/>
-        <copy todir="${dir.build.testapp}/WEB-INF/lib" file="${echo3.app.lib.jar}"/>
-        <copy todir="${dir.build.testapp}/WEB-INF/lib" file="${echo3.webcontainer.lib.jar}"/>
-        <copy todir="${dir.build.testapp}/WEB-INF/lib" file="${dir.dist.lib}/${jarfile.ft.app}"/>
-        <copy todir="${dir.build.testapp}/WEB-INF/lib" file="${dir.dist.lib}/${jarfile.ft.webcontainer}"/>
-        <copy todir="${dir.build.testapp}/WEB-INF/lib" file="${ft.commons-io.lib.jar}"/>
-        <copy todir="${dir.build.testapp}/WEB-INF/lib" file="${ft.commons-fileupload.lib.jar}"/>
-        <copy todir="${dir.build.testapp}/WEB-INF">
-            <fileset dir="${dir.deploy.testapp}"/>
+        <mkdir dir="${dir.build.server-java.testapp}/WEB-INF/classes"/>
+        <mkdir dir="${dir.build.server-java.testapp}/WEB-INF/lib"/>
+        <copy todir="${dir.build.server-java.testapp}/WEB-INF/lib" file="${echo3.app.lib.jar}"/>
+        <copy todir="${dir.build.server-java.testapp}/WEB-INF/lib" file="${echo3.webcontainer.lib.jar}"/>
+        <copy todir="${dir.build.server-java.testapp}/WEB-INF/lib" file="${dir.dist.lib}/${jarfile.filetransfer.model}"/>
+        <copy todir="${dir.build.server-java.testapp}/WEB-INF/lib" file="${dir.dist.lib}/${jarfile.filetransfer.receiver}"/>
+        <copy todir="${dir.build.server-java.testapp}/WEB-INF/lib" file="${dir.dist.lib}/${jarfile.filetransfer.app}"/>
+        <copy todir="${dir.build.server-java.testapp}/WEB-INF/lib" file="${dir.dist.lib}/${jarfile.filetransfer.webcontainer}"/>
+        <copy todir="${dir.build.server-java.testapp}/WEB-INF/lib" file="${filetransfer.commons-io.lib.jar}"/>
+        <copy todir="${dir.build.server-java.testapp}/WEB-INF/lib" file="${filetransfer.commons-fileupload.lib.jar}"/>
+        <copy todir="${dir.build.server-java.testapp}/WEB-INF">
+            <fileset dir="${dir.src.server-java.test-ia.deploy}"/>
         </copy>
-        <copy todir="${dir.build.testapp}">
-            <fileset dir="${dir.htdocs.testapp}"/>
+        <copy todir="${dir.build.server-java.testapp}">
+            <fileset dir="${dir.src.server-java.test-ia.htdocs}"/>
         </copy>
-        <javac srcdir="${dir.src.testapp}" destdir="${dir.build.testapp}/WEB-INF/classes" debug="${debug}" deprecation="yes" 
+        <javac srcdir="${dir.src.server-java.test-ia.lib}" destdir="${dir.build.server-java.testapp}/WEB-INF/classes" 
+                debug="${debug}" deprecation="yes" 
                 source="${ant.build.javac.source}" target="${ant.build.javac.target}">
             <classpath>
-                <pathelement path="${dir.dist.lib}/${jarfile.ft.app}"/>
-                <pathelement path="${dir.dist.lib}/${jarfile.ft.webcontainer}"/>
+                <pathelement path="${filetransfer.commons-io.lib.jar}"/>
+                <pathelement path="${filetransfer.commons-fileupload.lib.jar}"/>
                 <pathelement path="${servlet.lib.jar}"/>
                 <pathelement path="${echo3.app.lib.jar}"/>
                 <pathelement path="${echo3.webcontainer.lib.jar}"/>
+                <pathelement path="${dir.dist.lib}/${jarfile.filetransfer.model}"/>
+                <pathelement path="${dir.dist.lib}/${jarfile.filetransfer.receiver}"/>
+                <pathelement path="${dir.dist.lib}/${jarfile.filetransfer.app}"/>
+                <pathelement path="${dir.dist.lib}/${jarfile.filetransfer.webcontainer}"/>
             </classpath>
         </javac>
-        <copy todir="${dir.build.testapp}/WEB-INF/classes">
-            <fileset dir="${dir.src.testapp}">
+        <copy todir="${dir.build.server-java.testapp}/WEB-INF/classes">
+            <fileset dir="${dir.src.server-java.test-ia.lib}">
                 <patternset refid="fileset.resources"/>
-            </fileset>
-        	<fileset dir="${echo3.home}/src/server-java/testapp-interactive/lib">
-                <patternset refid="echo3.resources"/>
             </fileset>
         </copy>
     </target>
@@ -151,18 +205,87 @@
     <target name="dist.testapp" depends="compile.testapp" 
             description="Builds a web archive of the interactive test application">
         <mkdir dir="${dir.dist.testapp}"/>
-        <jar jarfile="${dir.dist.testapp}/${warfile.testapp}" basedir="${dir.build.testapp}"/>
+        <jar jarfile="${dir.dist.testapp}/${warfile.testapp}" basedir="${dir.build.server-java.testapp}"/>
     </target>
 	
+	<target name="doc.model"
+            description="Create public/protected JavaDoc documentation for model package.">
+        <mkdir dir="${dir.javadoc.model.public}"/>
+        <javadoc sourcepath="${dir.src.server-java.model}" 
+                packagenames="nextapp.echo.filetransfer.model.*" 
+                stylesheetfile="${javadoc.cssfile}"
+                destdir="${dir.javadoc.model.public}" 
+                WindowTitle="${javadoc.windowtitle}"
+                DocTitle="${javadoc.doctitle.model}"
+                Overview="${dir.src.server-java.model}/nextapp/echo/filetransfer/model/overview.html"
+                Header="${javadoc.header}">
+        </javadoc>
+    </target>
+    
+	<target name="doc.model.private"
+            description="Create private JavaDoc documentation for model package.">
+        <mkdir dir="${dir.javadoc.model.private}"/>
+        <javadoc sourcepath="${dir.src.server-java.model}" 
+                packagenames="nextapp.echo.filetransfer.model.*" 
+                stylesheetfile="${javadoc.cssfile}"
+                destdir="${dir.javadoc.model.private}" 
+                WindowTitle="${javadoc.windowtitle}"
+                DocTitle="${javadoc.doctitle.model}"
+                Overview="${dir.src.server-java.model}/nextapp/echo/filetransfer/model/overview.html"
+                Header="${javadoc.header}"
+                Private="true">
+        </javadoc>
+    </target>
+
+	<target name="doc.receiver"
+            description="Create public/protected JavaDoc documentation for receiver package.">
+        <mkdir dir="${dir.javadoc.receiver.public}"/>
+        <javadoc sourcepath="${dir.src.server-java.model};${dir.src.server-java.receiver}" 
+                packagenames="nextapp.echo.filetransfer.receiver.*" 
+                stylesheetfile="${javadoc.cssfile}"
+                destdir="${dir.javadoc.receiver.public}" 
+                WindowTitle="${javadoc.windowtitle}"
+                DocTitle="${javadoc.doctitle.receiver}"
+                Overview="${dir.src.server-java.receiver}/nextapp/echo/filetransfer/receiver/overview.html"
+                Header="${javadoc.header}">
+            <classpath>
+                <pathelement path="${filetransfer.commons-io.lib.jar}"/>
+                <pathelement path="${filetransfer.commons-fileupload.lib.jar}"/>
+                <pathelement path="${servlet.lib.jar}"/>
+            </classpath>
+        </javadoc>
+    </target>
+    
+	<target name="doc.receiver.private"
+            description="Create private JavaDoc documentation for receiver package.">
+        <mkdir dir="${dir.javadoc.receiver.private}"/>
+        <javadoc sourcepath="${dir.src.server-java.model};${dir.src.server-java.receiver}" 
+                packagenames="nextapp.echo.filetransfer.receiver.*" 
+                stylesheetfile="${javadoc.cssfile}"
+                destdir="${dir.javadoc.receiver.private}" 
+                WindowTitle="${javadoc.windowtitle}"
+                DocTitle="${javadoc.doctitle.receiver}"
+                Overview="${dir.src.server-java.receiver}/nextapp/echo/filetransfer/receiver/overview.html"
+                Header="${javadoc.header}"
+                Private="true">
+            <classpath>
+                <pathelement path="${filetransfer.commons-io.lib.jar}"/>
+                <pathelement path="${filetransfer.commons-fileupload.lib.jar}"/>
+                <pathelement path="${servlet.lib.jar}"/>
+            </classpath>
+        </javadoc>
+    </target>
+
 	<target name="doc.app"
             description="Create public/protected JavaDoc documentation for Application">
         <mkdir dir="${dir.javadoc.app.public}"/>
-        <javadoc sourcepath="${dir.src.app}" packagenames="nextapp.echo.filetransfer.app.*" 
+        <javadoc sourcepath="${dir.src.server-java.model};${dir.src.server-java.app}" 
+                packagenames="nextapp.echo.filetransfer.app.*" 
                 stylesheetfile="${javadoc.cssfile}"
                 destdir="${dir.javadoc.app.public}" 
                 WindowTitle="${javadoc.windowtitle}"
                 DocTitle="${javadoc.doctitle.app}"
-                Overview="${dir.src.app}/nextapp/echo/filetransfer/app/overview.html"
+                Overview="${dir.src.server-java.app}/nextapp/echo/filetransfer/app/overview.html"
                 Header="${javadoc.header}">
             <classpath>
                 <pathelement path="${echo3.app.lib.jar}"/>
@@ -173,12 +296,13 @@
     <target name="doc.app.private"
             description="Create private JavaDoc documentation for Application">
         <mkdir dir="${dir.javadoc.app.private}"/>
-        <javadoc sourcepath="${dir.src.app}" packagenames="nextapp.echo.filetransfer.app.*" 
+        <javadoc sourcepath="${dir.src.server-java.model};${dir.src.server-java.app}" 
+                packagenames="nextapp.echo.filetransfer.app.*" 
                 stylesheetfile="${javadoc.cssfile}"
                 destdir="${dir.javadoc.app.private}" 
                 WindowTitle="${javadoc.windowtitle}"
                 DocTitle="${javadoc.doctitle.app}"
-                Overview="${dir.src.app}/nextapp/echo/filetransfer/app/overview.html"
+                Overview="${dir.src.server-java.app}/nextapp/echo/filetransfer/app/overview.html"
                 Header="${javadoc.header}"
                 Private="true">
             <classpath>
@@ -190,19 +314,21 @@
     <target name="doc.webcontainer"
             description="Create public/protected JavaDoc documentation for Web Container">
         <mkdir dir="${dir.javadoc.webcontainer.public}"/>
-        <javadoc sourcepath="${dir.src.app};${dir.src.webcontainer}" packagenames="nextapp.echo.filetransfer.webcontainer.*" 
+        <javadoc 
+                sourcepath="${dir.src.server-java.model};${dir.src.server-java.receiver};${dir.src.server-java.app};${dir.src.server-java.webcontainer}" 
+                packagenames="nextapp.echo.filetransfer.webcontainer.*" 
                 stylesheetfile="${javadoc.cssfile}"
                 destdir="${dir.javadoc.webcontainer.public}" 
                 WindowTitle="${javadoc.windowtitle}"
                 DocTitle="${javadoc.doctitle.webcontainer}"
-                Overview="${dir.src.webcontainer}/nextapp/echo/filetransfer/webcontainer/overview.html"
+                Overview="${dir.src.server-java.webcontainer}/nextapp/echo/filetransfer/webcontainer/overview.html"
                 Header="${javadoc.header}">
             <classpath>
                 <pathelement path="${echo3.app.lib.jar}"/>
                 <pathelement path="${echo3.webcontainer.lib.jar}"/>
+                <pathelement path="${filetransfer.commons-io.lib.jar}"/>
+                <pathelement path="${filetransfer.commons-fileupload.lib.jar}"/>
                 <pathelement path="${servlet.lib.jar}"/>
-                <pathelement path="${ft.commons-io.lib.jar}"/>
-                <pathelement path="${ft.commons-fileupload.lib.jar}"/>
             </classpath>
         </javadoc>
     </target>
@@ -210,37 +336,38 @@
     <target name="doc.webcontainer.private"
             description="Create private JavaDoc documentation for Web Container">
         <mkdir dir="${dir.javadoc.webcontainer.private}"/>
-        <javadoc sourcepath="${dir.src.app};${dir.src.webcontainer}" packagenames="nextapp.echo.filetransfer.webcontainer.*" 
+        <javadoc 
+                sourcepath="${dir.src.server-java.model};${dir.src.server-java.receiver};${dir.src.server-java.app};${dir.src.server-java.webcontainer}" 
+                packagenames="nextapp.echo.filetransfer.webcontainer.*" 
                 stylesheetfile="${javadoc.cssfile}"
                 destdir="${dir.javadoc.webcontainer.private}" 
                 WindowTitle="${javadoc.windowtitle}"
                 DocTitle="${javadoc.doctitle.webcontainer}"
-                Overview="${dir.src.webcontainer}/nextapp/echo/filetransfer/app/overview.html"
+                Overview="${dir.src.server-java.webcontainer}/nextapp/echo/filetransfer/webcontainer/overview.html"
                 Header="${javadoc.header}"
                 Private="true">
             <classpath>
                 <pathelement path="${echo3.app.lib.jar}"/>
                 <pathelement path="${echo3.webcontainer.lib.jar}"/>
+                <pathelement path="${filetransfer.commons-io.lib.jar}"/>
+                <pathelement path="${filetransfer.commons-fileupload.lib.jar}"/>
                 <pathelement path="${servlet.lib.jar}"/>
-                <pathelement path="${ft.commons-io.lib.jar}"/>
-                <pathelement path="${ft.commons-fileupload.lib.jar}"/>
             </classpath>
         </javadoc>
     </target>
     
     <target name="doc.public" 
-            depends="doc.app, doc.webcontainer"/>
+            depends="doc.model, doc.receiver, doc.app, doc.webcontainer"/>
 
     <target name="doc.private" 
-            depends="doc.app.private, doc.webcontainer.private"/>
+            depends="doc.model.private, doc.receiver.private, doc.app.private, doc.webcontainer.private"/>
 
     <target name="doc" 
-            depends="doc.app, doc.app.private, doc.webcontainer, doc.webcontainer.private"/>
+            depends="doc.model, doc.model.private, doc.receiver, doc.receiver.private, doc.app, doc.app.private, doc.webcontainer, doc.webcontainer.private"/>
 	
     <target name="release" depends="clean, dist, dist.testapp, doc.public">
         <mkdir dir="${dir.build.release.root}"/>
         <mkdir dir="${dir.build.release.root}/SourceCode"/>
-   		<mkdir dir="${dir.build.release.root}/SourceCode/src"/>
         <mkdir dir="${dir.build.release.root}/Documentation"/>
         <mkdir dir="${dir.build.release.root}/BinaryLibraries"/>
         <mkdir dir="${dir.build.release.root}/BinaryApplications"/>
@@ -255,6 +382,11 @@
         </copy>
         <copy todir="${dir.build.release.root}/SourceCode/resource">
             <fileset dir="${dir.resource}">
+                <exclude name=".svn/**"/>
+            </fileset>
+        </copy>
+        <copy todir="${dir.build.release.root}/SourceCode/lib">
+            <fileset dir="${dir.lib}">
                 <exclude name=".svn/**"/>
             </fileset>
         </copy>
@@ -294,5 +426,15 @@
         <delete file="${dir.release}/${tarfile.release}"/>
     </target>
     
+    <target name="jslint.webcontainer">
+        <java fork="true" jar="${dir.resource.jslint}/rhino.jar">
+            <arg value="${dir.resource.jslint}/jslint.js"/>
+            <arg value="${dir.src.server-java.webcontainer.res}/"/>
+        </java>
+    </target>
+
+    <target name="jslint" depends="jslint.webcontainer">
+    </target>
+
 </project>
 
