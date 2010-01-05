@@ -55,7 +55,7 @@ FileTransfer.Sync.MultipleUploadSelect.SWFUploadRender = Core.extend(FileTransfe
     
     /** @see FileTransfer.Sync.UploadRender#add */
     add: function() {
-        this.peer.div.style.cssText = "position:relative;"
+        this.peer.div.style.cssText = "position:relative;overflow:hidden;width:" + Echo.Sync.Extent.toPixels("20em") + "px;"
         if (Core.Web.Env.QUIRK_IE_HAS_LAYOUT) {
             this.peer.div.style.zoom = 1;
         }
@@ -79,8 +79,6 @@ FileTransfer.Sync.MultipleUploadSelect.SWFUploadRender = Core.extend(FileTransfe
         var bounds = new Core.Web.Measure.Bounds(this.peer.div, { flags: Core.Web.Measure.Bounds.FLAG_MEASURE_DIMENSION });
         if (!this._swfUpload) {
             this._renderUploadControl(bounds);
-        } else  if (!this.peer.component.sending) {
-            this._swfUpload.setButtonDimensions(bounds.width, bounds.height);
         }
     },
     
@@ -177,6 +175,7 @@ FileTransfer.Sync.MultipleUploadSelect.SWFUploadRender = Core.extend(FileTransfe
     /** @see FileTransfer.Sync.UploadRender#send */
     send: function() {
         this._swfUpload.setButtonDimensions(0, 0);
+        this.peer.div.style.width = "";
         this._buttonDiv.style.display = "none";
         
         this._progressFileMap = {};
