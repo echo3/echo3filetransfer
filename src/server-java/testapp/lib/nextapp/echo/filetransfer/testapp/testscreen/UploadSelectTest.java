@@ -143,56 +143,60 @@ public class UploadSelectTest extends SplitPane {
         uploadSelect.addUploadListener(new UploadListener() {
         
             public void uploadComplete(UploadEvent e) {
-                Upload upload = e.getUpload();
-                switch (upload.getStatus()) {
-                case Upload.STATUS_COMPLETE:
-                    InteractiveApp.getApp().consoleWrite("Upload COMPLETE: " + e.getUpload());
-                    InputStream in = null;
-                    try {
-                        byte[] buffer = new byte[4096];
-                        int n = 0;
-                        int bytes = 0;
-                        in = e.getUpload().getInputStream();
-                        while (-1 != (n = in.read(buffer))) {
-                            bytes += n;
-                        }
-                        InteractiveApp.getApp().consoleWrite("Read: " + bytes + " bytes.");
-                    } catch (IOException ex) {
-                        InteractiveApp.getApp().consoleWrite("EXCEPTION: " + ex);
-                    } finally {
+                try {
+                    Upload upload = e.getUpload();
+                    switch (upload.getStatus()) {
+                    case Upload.STATUS_COMPLETE:
+                        InteractiveApp.getApp().consoleWrite("Upload COMPLETE: " + e.getUpload());
+                        InputStream in = null;
                         try {
-                            in.close();
+                            byte[] buffer = new byte[4096];
+                            int n = 0;
+                            int bytes = 0;
+                            in = e.getUpload().getInputStream();
+                            while (-1 != (n = in.read(buffer))) {
+                                bytes += n;
+                            }
+                            InteractiveApp.getApp().consoleWrite("Read: " + bytes + " bytes.");
                         } catch (IOException ex) {
                             InteractiveApp.getApp().consoleWrite("EXCEPTION: " + ex);
+                        } finally {
+                            try {
+                                in.close();
+                            } catch (IOException ex) {
+                                InteractiveApp.getApp().consoleWrite("EXCEPTION: " + ex);
+                            }
+                        }                    
+                        break;
+                    case Upload.STATUS_CANCELED:
+                        if (e.getUpload().getInputStream() != null) {
+                            throw new RuntimeException("InputStream available for failed upload, this should not happen");
                         }
-                    }                    
-                    break;
-                case Upload.STATUS_CANCELED:
-                    if (e.getUpload().getInputStream() != null) {
-                        throw new RuntimeException("InputStream available for failed upload, this should not happen");
-                    }
-                    InteractiveApp.getApp().consoleWrite("Upload CANCELED: " + e.getUpload());
-                    break;
-                case Upload.STATUS_ERROR_IO:
-                    if (e.getUpload().getInputStream() != null) {
-                        throw new RuntimeException("InputStream available for failed upload, this should not happen");
-                    }
-                    InteractiveApp.getApp().consoleWrite("Upload ERROR IO: " + e.getUpload());
-                    break;
-                case Upload.STATUS_ERROR_OVERSIZE:
-                    if (e.getUpload().getInputStream() != null) {
-                        throw new RuntimeException("InputStream available for failed upload, this should not happen");
-                    }
-                    InteractiveApp.getApp().consoleWrite("Upload ERROR OVERSIZE: " + e.getUpload());
-                    break;
-                case Upload.STATUS_IN_PROGRESS:
-                    InteractiveApp.getApp().consoleWrite("Upload IN PROGRESS: " + e.getUpload());
-                    break;
-                default:
-                    InteractiveApp.getApp().consoleWrite("Unexpected status: " + e.getUpload());
-                    break;
-                } 
-
+                        InteractiveApp.getApp().consoleWrite("Upload CANCELED: " + e.getUpload());
+                        break;
+                    case Upload.STATUS_ERROR_IO:
+                        if (e.getUpload().getInputStream() != null) {
+                            throw new RuntimeException("InputStream available for failed upload, this should not happen");
+                        }
+                        InteractiveApp.getApp().consoleWrite("Upload ERROR IO: " + e.getUpload());
+                        break;
+                    case Upload.STATUS_ERROR_OVERSIZE:
+                        if (e.getUpload().getInputStream() != null) {
+                            throw new RuntimeException("InputStream available for failed upload, this should not happen");
+                        }
+                        InteractiveApp.getApp().consoleWrite("Upload ERROR OVERSIZE: " + e.getUpload());
+                        break;
+                    case Upload.STATUS_IN_PROGRESS:
+                        InteractiveApp.getApp().consoleWrite("Upload IN PROGRESS: " + e.getUpload());
+                        break;
+                    default:
+                        InteractiveApp.getApp().consoleWrite("Unexpected status: " + e.getUpload());
+                        break;
+                    } 
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                    InteractiveApp.getApp().consoleWrite(ex.toString());
+                }
             }
         });
         testColumn.add(uploadSelect);

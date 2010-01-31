@@ -29,6 +29,8 @@
 
 package nextapp.echo.filetransfer.model;
 
+import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 
 /**
@@ -71,13 +73,22 @@ public interface Upload {
     public String getFileName();
     
     /**
+     * Returns the temporary file in which the data is stored.
+     * May return null if the file has not been written to disk in a temporary store.
+     * 
+     * @return the <code>File</code>, if available
+     */
+    public File getFile();
+    
+    /**
      * Returns an input stream containing the uploaded file. Implementations
      * should take care of closing this stream, since it may hold on to
      * resources.  This method may only be invoked once.
      * 
      * @return an input stream containing the uploaded file
      */
-    public InputStream getInputStream();
+    public InputStream getInputStream() 
+    throws IOException;
     
     /**
      * Returns the size of the uploaded file, in bytes.

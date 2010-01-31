@@ -29,6 +29,8 @@
 
 package nextapp.echo.filetransfer.model;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -51,6 +53,7 @@ public class UploadProcess {
     private class UploadImpl
     implements Upload {
         
+        private File temporaryFile;
         private String contentType;
         private String fileName;
         private InputStream in;
@@ -71,6 +74,13 @@ public class UploadProcess {
         public String getContentType() {
             return contentType;
         }
+
+        /**
+         * @see nextapp.echo.filetransfer.model.Upload#getFile()
+         */
+        public File getFile() {
+            return temporaryFile;
+        }
     
         /**
          * @see nextapp.echo.filetransfer.model.Upload#getFileName()
@@ -82,8 +92,13 @@ public class UploadProcess {
         /**
          * @see nextapp.echo.filetransfer.model.Upload#getInputStream()
          */
-        public InputStream getInputStream() {
-            return in;
+        public InputStream getInputStream() 
+        throws IOException {
+            if (in == null && temporaryFile != null) {
+                return new FileInputStream(temporaryFile);
+            } else {
+                return in;
+            }
         }
     
         /**
@@ -115,6 +130,16 @@ public class UploadProcess {
          */
         public void setContentType(String contentType) {
             this.contentType = contentType;
+        }
+        
+        /**
+         * Sets the temporary file.
+         * 
+         * @param file the file 
+         * @see #getFile()
+         */
+        public void setFile(File file) {
+            this.temporaryFile = file;
         }
         
         /**
@@ -264,17 +289,7 @@ public class UploadProcess {
         ((UploadImpl) upload).setSize(size);
         if (upload.getStatus() == Upload.STATUS_IN_PROGRESS) {
             ((UploadImpl) upload).setInputStream(in);
-            ((UploadImpl) upload).setStatus(Upload.STATUS_COMPLETE);
-            
-            if (listeners == null) {
-                return;
-            }
-            UploadProcessEvent e = new UploadProcessEvent(this, upload);
-            UploadProcessListener[] listenerArray = new UploadProcessListener[listeners.size()];
-            listeners.toArray(listenerArray);
-            for (int i = 0; i < listenerArray.length; ++i) {
-                listenerArray[i].uploadComplete(e);
-            }
+            notifyComplete(upload);
         } else {
             if (in != null) {
                 try {
@@ -283,6 +298,22 @@ public class UploadProcess {
                     throw new RuntimeException(ex);
                 }
             }
+        }
+    }
+    
+    /**
+     * Completes an individual {@link Upload}.
+     * The specified {@link File} and size information will be stored in the {@link Upload}.
+     * 
+     * @param upload the <code>Upload</code>
+     * @param in an temporary {@link File} containing the upload data
+     * @param size the length of the data, in bytes
+     */
+    public void complete(Upload upload, File file, long size) {
+        ((UploadImpl) upload).setSize(size);
+        if (upload.getStatus() == Upload.STATUS_IN_PROGRESS) {
+            ((UploadImpl) upload).setFile(file);
+            notifyComplete(upload);
         }
     }
     
@@ -414,6 +445,25 @@ public class UploadProcess {
      */
     public boolean isInitialized() {
         return size != -1;
+    }
+    
+    /**
+     * Notifies listeners that the upload has completed.
+     * 
+     * @param upload the complete upload
+     */
+    private void notifyComplete(Upload upload) {
+        ((UploadImpl) upload).setStatus(Upload.STATUS_COMPLETE);
+        
+        if (listeners == null) {
+            return;
+        }
+        UploadProcessEvent e = new UploadProcessEvent(this, upload);
+        UploadProcessListener[] listenerArray = new UploadProcessListener[listeners.size()];
+        listeners.toArray(listenerArray);
+        for (int i = 0; i < listenerArray.length; ++i) {
+            listenerArray[i].uploadComplete(e);
+        }
     }
     
     /**
