@@ -39,6 +39,15 @@ import nextapp.echo.filetransfer.model.UploadProcess;
 public class UploadMonitor {
     
     /**
+     * Generates an XML response string.
+     * 
+     * @param contentXml the contents of the document (inside the "m" element).
+     */
+    private static String createResponse(String contentXml) {
+        return "<?xml version=\"1.0\"?><m>" + contentXml + "</m>";
+    }
+    
+    /**
      * Processes an  upload monitor/control request.
      * 
      * @param request the incoming HTTP request
@@ -50,23 +59,20 @@ public class UploadMonitor {
         String processId = request.getParameter("pid");
         UploadProcess uploadProcess = UploadProcessManager.get(request, processId, false);
         if (uploadProcess == null) {
-            throw new IOException("Invalid upload process id: " + processId);
+            return createResponse("<s v=\"unknownpid\"/>");
         }
         String command = request.getParameter("command");
         if ("cancel".equals(command)) {
             uploadProcess.cancel();
         }
         
-        StringBuffer out = new StringBuffer("<?xml version=\"1.0\"?><m>");
         if (uploadProcess.isCanceled()) {
-            out.append("<s v=\"cancel\"/>");
+            return createResponse("<s v=\"cancel\"/>");
         } else if (uploadProcess.isComplete()) {
-            out.append("<s v=\"complete\"/>");
+            return createResponse("<s v=\"complete\"/>");
         } else {
-            out.append("<s p=\"" + uploadProcess.getProgress() + "/" + uploadProcess.getSize() + "\"/>");        
+            return createResponse("<s p=\"" + uploadProcess.getProgress() + "/" + uploadProcess.getSize() + "\"/>");        
         }
-        out.append("</m>");
-        return out.toString();
     }
     
     /** Non-instantiable class. */

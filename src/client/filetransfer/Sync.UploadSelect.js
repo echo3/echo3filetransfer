@@ -299,6 +299,8 @@ FileTransfer.Sync.DefaultUploadRender = Core.extend(FileTransfer.Sync.UploadRend
      * <code>Monitor</code> progress update listener.
      * 
      * @param {Object} status the progress status
+     * @return true if the progress checking thread should be re-enqueued.
+     * @type Boolean
      */
     _progress: function(status) {
         if (this.disposed) {
@@ -307,7 +309,7 @@ FileTransfer.Sync.DefaultUploadRender = Core.extend(FileTransfer.Sync.UploadRend
             this.peer.progressDisplay.complete();
             this.peer.component.complete();
             return false;
-        } else {
+        } else if (status.progress != null) {
             if (!this.peer.progressDisplay.initialized) {
                 this._progressFile = new FileTransfer.Sync.ProgressDisplay.File(status.fileName, status.size);
                 this.peer.progressDisplay.add(this._progressFile);
@@ -315,6 +317,9 @@ FileTransfer.Sync.DefaultUploadRender = Core.extend(FileTransfer.Sync.UploadRend
             }
             this._progressFile.progress = status.progress;
             this.peer.progressDisplay.update();
+            return true;
+        } else if (status.unknownPid) {
+            // Server hasn't received POST yet, just wait.
             return true;
         }
     },
@@ -417,6 +422,9 @@ FileTransfer.Sync.Monitor = Core.extend(Core.Web.Scheduler.Runnable, {
                 break;
             case "cancel":
                 status.cancel = true;
+                break;
+            case "unknownpid":
+                status.unknownPid = true;
                 break;
             }
         }
