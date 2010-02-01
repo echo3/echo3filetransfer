@@ -55,7 +55,7 @@ FileTransfer.Sync.MultipleUploadSelect.SWFUploadRender = Core.extend(FileTransfe
     
     /** @see FileTransfer.Sync.UploadRender#add */
     add: function() {
-        this.peer.div.style.cssText = "position:relative;overflow:hidden;width:" + Echo.Sync.Extent.toPixels("20em") + "px;"
+        this.peer.div.style.cssText = "position:relative;overflow:hidden;width:" + Echo.Sync.Extent.toPixels("20em") + "px;";
         if (Core.Web.Env.QUIRK_IE_HAS_LAYOUT) {
             this.peer.div.style.zoom = 1;
         }

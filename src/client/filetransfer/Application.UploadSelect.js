@@ -83,7 +83,7 @@ FileTransfer.AbstractUploadSelect = Core.extend(Echo.Component, {
      */
     ready: function() {
         this.fireEvent({ source: this, type: "uploadReady" });
-        if (this.render("autoSend"), true) {
+        if (this.render("autoSend", true)) {
             this.send();
         }
     },
