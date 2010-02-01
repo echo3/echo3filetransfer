@@ -319,7 +319,13 @@ FileTransfer.Sync.DefaultUploadRender = Core.extend(FileTransfer.Sync.UploadRend
             this.peer.progressDisplay.update();
             return true;
         } else if (status.unknownPid) {
-            // Server hasn't received POST yet, just wait.
+            // Server hasn't received POST yet.
+            if (!this._started) {
+                // Start upload if it is not yet started.
+                // This is performed here due to bug in Safari which only appears to manifest on 64-bit machines
+                // in somewhat unusual and difficult to test conditions.
+                this._start();
+            }
             return true;
         }
     },
@@ -327,11 +333,15 @@ FileTransfer.Sync.DefaultUploadRender = Core.extend(FileTransfer.Sync.UploadRend
     /** @see FileTransfer.Sync.UploadRender#send */
     send: function() {
         this._fileInput.style.display = "none";
-        this._form.submit();
         var url = this.peer.component.get("monitor") || this.peer.component.get("receiver");
         url += (url.indexOf("?") == -1 ? "?" : "&") + this.peer.urlParameters.join("&");
         this._monitor = new FileTransfer.Sync.Monitor(url, Core.method(this, this._progress));
         this._monitor.start();
+    },
+    
+    _start: function() {
+        this._started = true;
+        this._form.submit();
     }
 });
 
