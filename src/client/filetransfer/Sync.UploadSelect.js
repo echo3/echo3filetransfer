@@ -237,7 +237,7 @@ FileTransfer.Sync.DefaultUploadRender = Core.extend(FileTransfer.Sync.UploadRend
     /** @see FileTransfer.Sync.UploadRender#add */
     add: function() {
         // Render Target IFRAME and form.
-        if (Core.Web.Env.BROWSER_INTERNET_EXPLORER) {
+        if (Core.Web.Env.BROWSER_INTERNET_EXPLORER  && Core.Web.Env.BROWSER_VERSION_MAJOR < 9) {
             // Target IFRAME must be created using innerHTML for IE or it will not be targeted by the upload form.
             var iframeSrc = "<iframe " +
                     "name=\"" + this.peer.component.renderId + "_target\" " +
