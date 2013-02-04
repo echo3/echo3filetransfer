@@ -29,7 +29,7 @@
  * the terms of any one of the MPL, the GPL or the LGPL.
 --> 
  
-<project name="NextApp_Echo_3_FileTransfer" default="dist" basedir=".">
+<project name="echo3-filetransfer" default="dist" basedir=".">
 
     <property environment="env"/>
     <property file="custom-ant.properties"/>
@@ -85,6 +85,7 @@
     <target name="dist.model" depends="compile.model">
         <mkdir dir="${dir.dist.lib}"/>
         <jar jarfile="${dir.dist.lib}/${jarfile.filetransfer.model}" basedir="${dir.build.server-java.model}"/>
+        <jar jarfile="${dir.dist.lib}/${srcfile.filetransfer.model}" basedir="${dir.src.server-java.model}"/>
     </target>
     
     <target name="compile.receiver" depends="compile.model" description="Compile receiver source files">
@@ -109,6 +110,7 @@
     <target name="dist.receiver" depends="compile.receiver">
         <mkdir dir="${dir.dist.lib}"/>
         <jar jarfile="${dir.dist.lib}/${jarfile.filetransfer.receiver}" basedir="${dir.build.server-java.receiver}"/>
+        <jar jarfile="${dir.dist.lib}/${srcfile.filetransfer.receiver}" basedir="${dir.src.server-java.receiver}"/>
     </target>
     
     <target name="compile.app" depends="compile.model" description="Compile Application source files">
@@ -131,6 +133,7 @@
     <target name="dist.app" depends="clean,compile.app">
         <mkdir dir="${dir.dist.lib}"/>
         <jar jarfile="${dir.dist.lib}/${jarfile.filetransfer.app}" basedir="${dir.build.server-java.app}"/>
+        <jar jarfile="${dir.dist.lib}/${srcfile.filetransfer.app}" basedir="${dir.src.server-java.app}"/>
     </target>
             
     <target name="compile.webcontainer" depends="compile.app,compile.receiver" description="Compile Web Container source files">
@@ -164,6 +167,7 @@
     <target name="dist.webcontainer" depends="clean,compile.webcontainer">
         <mkdir dir="${dir.dist.lib}"/>
         <jar jarfile="${dir.dist.lib}/${jarfile.filetransfer.webcontainer}" basedir="${dir.build.server-java.webcontainer}"/>
+        <jar jarfile="${dir.dist.lib}/${srcfile.filetransfer.webcontainer}" basedir="${dir.src.server-java.webcontainer}"/>
     </target>
         
     <target name="dist" depends="clean, dist.model,dist.receiver,dist.app, dist.webcontainer"/>
