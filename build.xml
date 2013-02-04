@@ -72,7 +72,8 @@
     <target name="compile.model" description="Compile model source files">
         <mkdir dir="${dir.build.server-java.model}"/>
         <javac srcdir="${dir.src.server-java.model}" destdir="${dir.build.server-java.model}" 
-                debug="${debug}" deprecation="yes" source="${ant.build.javac.source}" target="${ant.build.javac.target}">
+                debug="${debug}" deprecation="yes" includeantruntime="false"
+                source="${ant.build.javac.source}" target="${ant.build.javac.target}">
         </javac>
         <copy todir="${dir.build.server-java.model}">
             <fileset dir="${dir.src.server-java.model}">
@@ -89,7 +90,8 @@
     <target name="compile.receiver" depends="compile.model" description="Compile receiver source files">
         <mkdir dir="${dir.build.server-java.receiver}"/>
         <javac srcdir="${dir.src.server-java.receiver}" destdir="${dir.build.server-java.receiver}" 
-                debug="${debug}" deprecation="yes" source="${ant.build.javac.source}" target="${ant.build.javac.target}">
+                debug="${debug}" deprecation="yes" includeantruntime="false"
+                source="${ant.build.javac.source}" target="${ant.build.javac.target}">
             <classpath>
                 <pathelement path="${dir.build.server-java.model}"/>
                 <pathelement path="${servlet.lib.jar}"/>
@@ -112,7 +114,8 @@
     <target name="compile.app" depends="compile.model" description="Compile Application source files">
         <mkdir dir="${dir.build.server-java.app}"/>
         <javac srcdir="${dir.src.server-java.app}" destdir="${dir.build.server-java.app}" 
-                debug="${debug}" deprecation="yes" source="${ant.build.javac.source}" target="${ant.build.javac.target}">
+                debug="${debug}" deprecation="yes" includeantruntime="false"
+                source="${ant.build.javac.source}" target="${ant.build.javac.target}">
             <classpath>
                 <pathelement path="${echo3.app.lib.jar}"/>
                 <pathelement path="${dir.build.server-java.model}"/>
@@ -133,7 +136,8 @@
     <target name="compile.webcontainer" depends="compile.app,compile.receiver" description="Compile Web Container source files">
         <mkdir dir="${dir.build.server-java.webcontainer}"/>
         <javac srcdir="${dir.src.server-java.webcontainer}" destdir="${dir.build.server-java.webcontainer}" 
-                debug="${debug}" deprecation="yes" source="${ant.build.javac.source}" target="${ant.build.javac.target}">
+                debug="${debug}" deprecation="yes" includeantruntime="false" 
+                source="${ant.build.javac.source}" target="${ant.build.javac.target}">
             <classpath>
                 <pathelement path="${dir.build.server-java.model}"/>
                 <pathelement path="${dir.build.server-java.receiver}"/>
@@ -182,7 +186,7 @@
             <fileset dir="${dir.src.server-java.test-ia.htdocs}"/>
         </copy>
         <javac srcdir="${dir.src.server-java.test-ia.lib}" destdir="${dir.build.server-java.testapp}/WEB-INF/classes" 
-                debug="${debug}" deprecation="yes" 
+                debug="${debug}" deprecation="yes" includeantruntime="false" 
                 source="${ant.build.javac.source}" target="${ant.build.javac.target}">
             <classpath>
                 <pathelement path="${filetransfer.commons-io.lib.jar}"/>
