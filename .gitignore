@@ -1,5 +1,7 @@
 lib
 dist
+javadoc
+release
 build
 custom-ant.properties
 .idea/workspace.xml
