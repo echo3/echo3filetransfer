@@ -1,0 +1,30 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="echo3-filetransfer:testapp">
+    <output-path>$PROJECT_DIR$/build/artifacts/echo3_filetransfer_testapp</output-path>
+    <root id="root">
+      <element id="javaee-facet-resources" facet="echo3-filetransfer-testapp/web/testapp" />
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="echo3-filetransfer-testapp" />
+          <element id="module-output" name="echo3-filetransfer" />
+          <element id="directory" name="nextapp">
+            <element id="directory" name="echo">
+              <element id="directory" name="filetransfer">
+                <element id="directory" name="webcontainer">
+                  <element id="directory" name="resource">
+                    <element id="dir-copy" path="$PROJECT_DIR$/src/client/filetransfer" />
+                  </element>
+                </element>
+              </element>
+            </element>
+          </element>
+        </element>
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="echo3-webcontainer-3.0" />
+          <element id="file-copy" path="$PROJECT_DIR$/lib/commons-io-1.3.2.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/lib/commons-fileupload-1.2.jar" />
+        </element>
+      </element>
+    </root>
+  </artifact>
+</component>
