@@ -1,0 +1,108 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Server Testapp on Jetty" type="JettyConfiguration" factoryName="Local" APPLICATION_SERVER_NAME="Jetty 8">
+    <option name="START_JAVASCRIPT_DEBUGGER" value="true" />
+    <option name="UPDATING_POLICY" value="restart-server" />
+    <deployment>
+      <artifact name="echo3-filetransfer:testapp">
+        <settings DEPLOYMENT_METHOD="contexts">
+          <option name="contextRoot" value="/testapp" />
+          <option name="defaultContextRoot" value="false" />
+        </settings>
+      </artifact>
+    </deployment>
+    <server-settings>
+      <data>
+        <option name="configFiles">
+          <list>
+            <JettyConfigFile>
+              <option name="active" value="true" />
+              <option name="path" value="etc\jetty-jmx.xml" />
+            </JettyConfigFile>
+            <JettyConfigFile>
+              <option name="path" value="etc\jetty-ajp.xml" />
+            </JettyConfigFile>
+            <JettyConfigFile>
+              <option name="path" value="etc\jetty-bio.xml" />
+            </JettyConfigFile>
+            <JettyConfigFile>
+              <option name="path" value="etc\jetty-jaas.xml" />
+            </JettyConfigFile>
+            <JettyConfigFile>
+              <option name="path" value="etc\jetty-logging.xml" />
+            </JettyConfigFile>
+            <JettyConfigFile>
+              <option name="path" value="etc\jetty-plus.xml" />
+            </JettyConfigFile>
+            <JettyConfigFile>
+              <option name="path" value="etc\jetty-rewrite.xml" />
+            </JettyConfigFile>
+            <JettyConfigFile>
+              <option name="path" value="etc\jetty-setuid.xml" />
+            </JettyConfigFile>
+            <JettyConfigFile>
+              <option name="path" value="etc\jetty-ssl.xml" />
+            </JettyConfigFile>
+            <JettyConfigFile>
+              <option name="path" value="etc\jetty-sslengine.xml" />
+            </JettyConfigFile>
+            <JettyConfigFile>
+              <option name="path" value="etc\jetty-stats.xml" />
+            </JettyConfigFile>
+            <JettyConfigFile>
+              <option name="path" value="etc\jetty-win32-service.xml" />
+            </JettyConfigFile>
+            <JettyConfigFile>
+              <option name="path" value="etc\jetty-xinetd.xml" />
+            </JettyConfigFile>
+            <JettyConfigFile>
+              <option name="path" value="etc\jetty.xml" />
+            </JettyConfigFile>
+          </list>
+        </option>
+      </data>
+    </server-settings>
+    <predefined_log_file id="Jetty" enabled="true" />
+    <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+    <RunnerSettings RunnerId="Debug">
+      <option name="DEBUG_PORT" value="" />
+      <option name="TRANSPORT" value="0" />
+      <option name="LOCAL" value="true" />
+    </RunnerSettings>
+    <RunnerSettings RunnerId="Run" />
+    <ConfigurationWrapper VM_VAR="" RunnerId="Debug">
+      <option name="USE_ENV_VARIABLES" value="true" />
+      <STARTUP>
+        <option name="USE_DEFAULT" value="true" />
+        <option name="SCRIPT" value="" />
+        <option name="VM_PARAMETERS" value="" />
+        <option name="PROGRAM_PARAMETERS" value="" />
+      </STARTUP>
+      <SHUTDOWN>
+        <option name="USE_DEFAULT" value="true" />
+        <option name="SCRIPT" value="" />
+        <option name="VM_PARAMETERS" value="" />
+        <option name="PROGRAM_PARAMETERS" value="" />
+      </SHUTDOWN>
+    </ConfigurationWrapper>
+    <ConfigurationWrapper VM_VAR="" RunnerId="Run">
+      <option name="USE_ENV_VARIABLES" value="true" />
+      <STARTUP>
+        <option name="USE_DEFAULT" value="true" />
+        <option name="SCRIPT" value="" />
+        <option name="VM_PARAMETERS" value="" />
+        <option name="PROGRAM_PARAMETERS" value="" />
+      </STARTUP>
+      <SHUTDOWN>
+        <option name="USE_DEFAULT" value="true" />
+        <option name="SCRIPT" value="" />
+        <option name="VM_PARAMETERS" value="" />
+        <option name="PROGRAM_PARAMETERS" value="" />
+      </SHUTDOWN>
+    </ConfigurationWrapper>
+    <method>
+      <option name="BuildArtifacts" enabled="true">
+        <artifact name="echo3-filetransfer:testapp" />
+      </option>
+    </method>
+  </configuration>
+</component>
