@@ -57,8 +57,57 @@
             <JettyConfigFile>
               <option name="path" value="etc\jetty.xml" />
             </JettyConfigFile>
+            <JettyConfigFile>
+              <option name="path" value="etc\jetty-annotations.xml" />
+            </JettyConfigFile>
+            <JettyConfigFile>
+              <option name="path" value="etc\jetty-bio-ssl.xml" />
+            </JettyConfigFile>
+            <JettyConfigFile>
+              <option name="path" value="etc\jetty-contexts.xml" />
+            </JettyConfigFile>
+            <JettyConfigFile>
+              <option name="path" value="etc\jetty-debug.xml" />
+            </JettyConfigFile>
+            <JettyConfigFile>
+              <option name="path" value="etc\jetty-deploy.xml" />
+            </JettyConfigFile>
+            <JettyConfigFile>
+              <option name="path" value="etc\jetty-fileserver.xml" />
+            </JettyConfigFile>
+            <JettyConfigFile>
+              <option name="path" value="etc\jetty-ipaccess.xml" />
+            </JettyConfigFile>
+            <JettyConfigFile>
+              <option name="path" value="etc\jetty-monitor.xml" />
+            </JettyConfigFile>
+            <JettyConfigFile>
+              <option name="path" value="etc\jetty-overlay.xml" />
+            </JettyConfigFile>
+            <JettyConfigFile>
+              <option name="path" value="etc\jetty-policy.xml" />
+            </JettyConfigFile>
+            <JettyConfigFile>
+              <option name="path" value="etc\jetty-proxy.xml" />
+            </JettyConfigFile>
+            <JettyConfigFile>
+              <option name="path" value="etc\jetty-requestlog.xml" />
+            </JettyConfigFile>
+            <JettyConfigFile>
+              <option name="path" value="etc\jetty-spdy-proxy.xml" />
+            </JettyConfigFile>
+            <JettyConfigFile>
+              <option name="path" value="etc\jetty-spdy.xml" />
+            </JettyConfigFile>
+            <JettyConfigFile>
+              <option name="path" value="etc\jetty-testrealm.xml" />
+            </JettyConfigFile>
+            <JettyConfigFile>
+              <option name="path" value="etc\jetty-webapps.xml" />
+            </JettyConfigFile>
           </list>
         </option>
+        <option name="jndiPort" value="10099" />
       </data>
     </server-settings>
     <predefined_log_file id="Jetty" enabled="true" />
