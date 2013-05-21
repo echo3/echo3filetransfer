@@ -1,16 +1,20 @@
 About
 =====
-The Echo3 File Transfer Library is a collection of Echo3 components to facilitate uploading and downloading of files between the client and server. 
-
-At the present time this library should be considered API-unstable, i.e., breaking changes may be made to subsequent versions of the API.
+The Echo3 File Transfer Library is a collection of Echo3 components to facilitate uploading and downloading of files between the client
+and server.
 
 Building
 ========
-To just build the JARs, you only need to have the Echo3 library JARs available, and the folder location set as environment variable
-ECHO3_LIB_HOME.
+To just build the JARs, a few dependencies are required to be present in the lib directory. These are automatically downloaded on your
+first run of the Ant build or by manually running the "dependencies" target.
 
-In order to build the test web application, you must have the echo3 source code checked out and built, and you must set up the location
-of that checkout as an environment variable named ECHO3_HOME.  You still need to specify the LIB variable above.  
-Look at the included ant.properties to understand what you need to do.
+Developing
+==========
+The project contains a pre-configured IntelliJ IDEA project. Using the Ultimate Edition there are also pre-defined run targets to run
+i.e. the test harness application. Same can be achieved using the according Ant tasks to build a WAR and deploy it on any servlet
+container of choice.
 
-To check out echo3, follow the instructions at http://echo.nextapp.com/site/echo3/download
+Licence
+=======
+This code has the same licencing terms as Echo Framework and is licenced under the MPL, LGPL, GPL terms. For details check the
+resource/Licensing directory.
