@@ -1,6 +1,9 @@
 Changes in v3.1.0
 - TODO
-
+- Implementation of some visual properties for (Multi)UploadSelect
+  Background, Insets and Border for both. Additional width/height/
+  backgroundImage and Foreground for Multiselect.
+    
 Changes in v3.0.0 
 - Minor build improvmements and alignment to Maven conventions
 

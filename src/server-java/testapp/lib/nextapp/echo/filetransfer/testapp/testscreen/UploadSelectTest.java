@@ -31,9 +31,12 @@ package nextapp.echo.filetransfer.testapp.testscreen;
 
 import java.io.IOException;
 import java.io.InputStream;
-
+import java.util.Random;
+import nextapp.echo.app.Border;
 import nextapp.echo.app.Button;
+import nextapp.echo.app.Color;
 import nextapp.echo.app.Column;
+import nextapp.echo.app.Insets;
 import nextapp.echo.app.SplitPane;
 import nextapp.echo.app.event.ActionEvent;
 import nextapp.echo.app.event.ActionListener;
@@ -115,6 +118,34 @@ public class UploadSelectTest extends SplitPane {
                 } else {
                     button.setText("Uploads that start with 'A': Allow");
                 }
+            }
+        });
+
+        // Some styleability tests
+        controlsColumn.addButton("Set random background", new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                Random rnd = new Random();
+                uploadSelect.setBackground(new Color(rnd.nextInt(), rnd.nextInt(), rnd.nextInt()));
+            }
+        });
+        controlsColumn.addButton("Set Insets 10px", new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                uploadSelect.setInsets(new Insets(10));
+            }
+        });
+        controlsColumn.addButton("Remove Insets", new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                uploadSelect.setInsets(null);
+            }
+        });
+        controlsColumn.addButton("Set blue 5px border", new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                uploadSelect.setBorder(new Border(5, Color.BLUE, Border.STYLE_SOLID));
+            }
+        });
+        controlsColumn.addButton("Remove border", new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                uploadSelect.setBorder(null);
             }
         });
 

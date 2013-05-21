@@ -55,16 +55,36 @@ FileTransfer.Sync.MultipleUploadSelect.SWFUploadRender = Core.extend(FileTransfe
     
     /** @see FileTransfer.Sync.UploadRender#add */
     add: function() {
-        this.peer.div.style.cssText = "position:relative;overflow:hidden;width:" + Echo.Sync.Extent.toPixels("20em") + "px;";
+        var component = this.peer.component;
+        var componentBorder = component.render("border");
+        var componentWidth = Echo.Sync.Extent.toPixels(component.render("width", "20em"));
+        var componentInsets = component.render("insets");
+        var componentInsetsPx = Echo.Sync.Insets.toPixels(componentInsets);
+
+        // Some sizing voodoo
+        var outerWidth = componentWidth + componentInsetsPx.left + componentInsetsPx.right;
+        outerWidth += Echo.Sync.Border.getPixelSize(componentBorder, "left");
+        outerWidth += Echo.Sync.Border.getPixelSize(componentBorder, "right");
+        this.peer.div.style.cssText = "position:relative;overflow:hidden;width:" + outerWidth + "px;";
         if (Core.Web.Env.QUIRK_IE_HAS_LAYOUT) {
             this.peer.div.style.zoom = 1;
         }
 
         this._buttonDiv = document.createElement("div");
-        Echo.Sync.renderComponentDefaults(this.peer.component, this._buttonDiv);
-        Echo.Sync.Border.render(this.peer.component.render("border"), this._buttonDiv);
-        Echo.Sync.Insets.render(this.peer.component.render("insets"), this._buttonDiv, "padding");
-        this._buttonDiv.appendChild(document.createTextNode(this.peer.component.render("text", "Upload")));
+        Echo.Sync.renderComponentDefaults(component, this._buttonDiv);
+        Echo.Sync.Border.render(componentBorder, this._buttonDiv);
+        Echo.Sync.Insets.render(componentInsets, this._buttonDiv, "padding");
+        Echo.Sync.FillImage.render(component.render("backgroundImage"), this._buttonDiv);
+        Echo.Sync.Alignment.render(component.render("alignment"), this._buttonDiv, true, component);
+        if (componentWidth) {
+            this._buttonDiv.style.width = Echo.Sync.Extent.toCssValue(componentWidth, true, true);
+        }
+        var height = component.render("height");
+        if (height) {
+            this._buttonDiv.style.height = Echo.Sync.Extent.toCssValue(height, false);
+            this._buttonDiv.style.overflow = "hidden";
+        }
+        this._buttonDiv.appendChild(document.createTextNode(component.render("text", "Upload")));
         this.peer.div.appendChild(this._buttonDiv);
     },
   
@@ -154,7 +174,7 @@ FileTransfer.Sync.MultipleUploadSelect.SWFUploadRender = Core.extend(FileTransfe
         
         var uploadUrl = this.peer.component.get("receiver");
         uploadUrl += (uploadUrl.indexOf("?") == -1 ? "?" : "&") + this.peer.urlParameters.join("&");
-        
+
         this._swfUpload = new SWFUpload({
             button_window_mode: SWFUpload.WINDOW_MODE.TRANSPARENT,
             button_placeholder: span,

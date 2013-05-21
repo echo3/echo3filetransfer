@@ -29,10 +29,72 @@
 
 package nextapp.echo.filetransfer.app;
 
+import nextapp.echo.app.Extent;
+import nextapp.echo.app.FillImage;
+
 /**
  * A component that allows users to upload files to the application from remote
  * clients.
  */
 public class MultipleUploadSelect extends AbstractUploadSelect {
-    
+
+    public static final String PROPERTY_WIDTH = "width";
+    public static final String PROPERTY_HEIGHT = "height";
+    public static final String PROPERTY_BACKGROUND_IMAGE = "backgroundImage";
+
+    /**
+     * Returns the width.
+     *
+     * @return the width
+     */
+    public Extent getWidth() {
+        return (Extent) get(PROPERTY_WIDTH);
+    }
+
+    /**
+     * Sets the width.
+     *
+     * @param newValue the new width
+     */
+    public void setWidth(Extent newValue) {
+        set(PROPERTY_WIDTH, newValue);
+    }
+
+    /**
+     * Returns the height of the component.
+     * This property only supports <code>Extent</code>s with fixed (i.e., not percent) units.
+     *
+     * @return the height
+     */
+    public Extent getHeight() {
+        return (Extent) get(PROPERTY_HEIGHT);
+    }
+
+    /**
+     * Sets the height.
+     * This property only supports <code>Extent</code>s with fixed (i.e., not percent) units.
+     *
+     * @param newValue the new height
+     */
+    public void setHeight(Extent newValue) {
+        set(PROPERTY_HEIGHT, newValue);
+    }
+
+    /**
+     * Returns the background image.
+     *
+     * @return the background image
+     */
+    public FillImage getBackgroundImage() {
+        return (FillImage) get(PROPERTY_BACKGROUND_IMAGE);
+    }
+
+    /**
+     * Sets the background image.
+     *
+     * @param newValue the new background image
+     */
+    public void setBackgroundImage(FillImage newValue) {
+        set(PROPERTY_BACKGROUND_IMAGE, newValue);
+    }
 }
