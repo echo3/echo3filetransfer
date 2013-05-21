@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/echo3-filetransfer.iml" filepath="$PROJECT_DIR$/echo3-filetransfer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/src/server-java/testapp/echo3-filetransfer-testapp.iml" filepath="$PROJECT_DIR$/src/server-java/testapp/echo3-filetransfer-testapp.iml" />
+    </modules>
+  </component>
+</project>
+
