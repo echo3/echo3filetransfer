@@ -498,7 +498,7 @@
         <!-- Install Filetransfer Web Servlet module -->
         <artifact:pom id="webcontainer-pom" file="${dir.build}/maven-pom/echo3-filetransfer-webcontainer-pom.xml" />
         <artifact:install file="${dir.dist.lib}/${jarfile.filetransfer.webcontainer}">
-            <pom refid="app-pom"/>
+            <pom refid="webcontainer-pom"/>
             <attach file="${dir.dist.lib}/${srcfile.filetransfer.webcontainer}" type="jar" classifier="sources"/>
             <attach file="${dir.dist.lib}/${docfile.filetransfer.webcontainer}" type="jar" classifier="javadoc"/>
         </artifact:install>
@@ -513,7 +513,7 @@
 
         <!-- Install Filetransfer Receiver -->
         <artifact:pom id="receiver-pom" file="${dir.build}/maven-pom/echo3-filetransfer-receiver-pom.xml" />
-        <artifact:install file="${dir.dist.lib}/${jarfile.filetransfer.model}">
+        <artifact:install file="${dir.dist.lib}/${jarfile.filetransfer.receiver}">
             <pom refid="receiver-pom"/>
             <attach file="${dir.dist.lib}/${srcfile.filetransfer.receiver}" type="jar" classifier="sources"/>
             <attach file="${dir.dist.lib}/${docfile.filetransfer.receiver}" type="jar" classifier="javadoc"/>
@@ -591,17 +591,17 @@
         <deploysigned module="app" classifier="sources" file="${srcfile.filetransfer.app}"/>
         <deploysigned module="app" classifier="javadoc" file="${docfile.filetransfer.app}"/>
 
-        <deploysigned module="webcontainer" classifier=""        file="${jarfile.filetransfer.app}"/>
-        <deploysigned module="webcontainer" classifier="sources" file="${srcfile.filetransfer.app}"/>
-        <deploysigned module="webcontainer" classifier="javadoc" file="${docfile.filetransfer.app}"/>
+        <deploysigned module="webcontainer" classifier=""        file="${jarfile.filetransfer.webcontainer}"/>
+        <deploysigned module="webcontainer" classifier="sources" file="${srcfile.filetransfer.webcontainer}"/>
+        <deploysigned module="webcontainer" classifier="javadoc" file="${docfile.filetransfer.webcontainer}"/>
 
-        <deploysigned module="receiver" classifier=""        file="${jarfile.filetransfer.app}"/>
-        <deploysigned module="receiver" classifier="sources" file="${srcfile.filetransfer.app}"/>
-        <deploysigned module="receiver" classifier="javadoc" file="${docfile.filetransfer.app}"/>
+        <deploysigned module="receiver" classifier=""        file="${jarfile.filetransfer.receiver}"/>
+        <deploysigned module="receiver" classifier="sources" file="${srcfile.filetransfer.receiver}"/>
+        <deploysigned module="receiver" classifier="javadoc" file="${docfile.filetransfer.receiver}"/>
 
-        <deploysigned module="model" classifier=""        file="${jarfile.filetransfer.app}"/>
-        <deploysigned module="model" classifier="sources" file="${srcfile.filetransfer.app}"/>
-        <deploysigned module="model" classifier="javadoc" file="${docfile.filetransfer.app}"/>
+        <deploysigned module="model" classifier=""        file="${jarfile.filetransfer.model}"/>
+        <deploysigned module="model" classifier="sources" file="${srcfile.filetransfer.model}"/>
+        <deploysigned module="model" classifier="javadoc" file="${docfile.filetransfer.model}"/>
 
     </target>
 
