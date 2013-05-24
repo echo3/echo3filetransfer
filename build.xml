@@ -619,8 +619,9 @@
         </java>
     </target>
     
-    <target name="jslint" depends="jslint.webcontainer">
-    </target>
+    <target name="jslint" depends="jslint.webcontainer"/>
+
+    <target name="test" depends="dist"/>
 
 </project>
 
