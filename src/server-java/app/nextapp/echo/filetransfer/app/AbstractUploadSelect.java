@@ -32,7 +32,9 @@ package nextapp.echo.filetransfer.app;
 import java.util.EventListener;
 import java.util.TooManyListenersException;
 
+import nextapp.echo.app.Border;
 import nextapp.echo.app.Component;
+import nextapp.echo.app.Insets;
 import nextapp.echo.filetransfer.app.event.UploadEvent;
 import nextapp.echo.filetransfer.app.event.UploadListener;
 import nextapp.echo.filetransfer.app.event.UploadProgressListener;
@@ -49,7 +51,10 @@ public abstract class AbstractUploadSelect extends Component {
     public static final String UPLOAD_LISTENERS_CHANGED_PROPERTY = "uploadListeners";
     public static final String UPLOAD_PROGRESS_LISTENERS_CHANGED_PROPERTY = "uploadProgressListeners";
     public static final String INPUT_UPLOAD_COMPLETE = "uploadComplete";
-    
+
+    public static final String PROPERTY_INSETS = "insets";
+    public static final String PROPERTY_BORDER = "border";
+
     //FIXME Must release upload process listeners as soon as possible.
     private UploadProcessListener uploadProcessListener = new UploadProcessListener() {
 
@@ -241,4 +246,41 @@ public abstract class AbstractUploadSelect extends Component {
             this.uploadProcess.addProcessListener(uploadProcessListener);
         }
     }
+
+    /**
+     * Returns the default inset between the border and cells of the component.
+     *
+     * @return the inset
+     */
+    public Insets getInsets() {
+        return (Insets) get(PROPERTY_INSETS);
+    }
+
+    /**
+     * Sets the inset between the border and cells of the component.
+     *
+     * @param newValue the new inset
+     */
+    public void setInsets(Insets newValue) {
+        set(PROPERTY_INSETS, newValue);
+    }
+
+    /**
+     * Sets the <code>Border</code> that encloses the component.
+     *
+     * @param newValue the new border
+     */
+    public void setBorder(Border newValue) {
+        set(PROPERTY_BORDER, newValue);
+    }
+
+    /**
+     * Returns the <code>Border</code> that encloses the component.
+     *
+     * @return the border
+     */
+    public Border getBorder() {
+        return (Border) get(PROPERTY_BORDER);
+    }
+
 }

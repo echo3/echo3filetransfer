@@ -31,8 +31,12 @@ package nextapp.echo.filetransfer.testapp.testscreen;
 
 import java.io.IOException;
 import java.io.InputStream;
-
+import java.util.Random;
+import nextapp.echo.app.Border;
+import nextapp.echo.app.Color;
 import nextapp.echo.app.Column;
+import nextapp.echo.app.Extent;
+import nextapp.echo.app.Insets;
 import nextapp.echo.app.SplitPane;
 import nextapp.echo.app.event.ActionEvent;
 import nextapp.echo.app.event.ActionListener;
@@ -89,6 +93,60 @@ public class MultipleUploadSelectTest extends SplitPane {
         controlsColumn.addButton("Set Bandwidth = 16MB", new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 JakartaUploadProcessor.setBandwidth(16 * 1024 * 1024);
+            }
+        });
+
+        // Some styleability tests
+        controlsColumn.addButton("Set random foreground", new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                Random rnd = new Random();
+                uploadSelect.setForeground(new Color(rnd.nextInt(), rnd.nextInt(), rnd.nextInt()));
+            }
+        });
+        controlsColumn.addButton("Set random background", new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                Random rnd = new Random();
+                uploadSelect.setBackground(new Color(rnd.nextInt(), rnd.nextInt(), rnd.nextInt()));
+            }
+        });
+        controlsColumn.addButton("Set Insets 10px", new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                uploadSelect.setInsets(new Insets(10));
+            }
+        });
+        controlsColumn.addButton("Remove Insets", new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                uploadSelect.setInsets(null);
+            }
+        });
+        controlsColumn.addButton("Set 500px width", new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                uploadSelect.setWidth(new Extent(500));
+            }
+        });
+        controlsColumn.addButton("Remove width", new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                uploadSelect.setWidth(null);
+            }
+        });
+        controlsColumn.addButton("Set 100px height", new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                uploadSelect.setHeight(new Extent(100));
+            }
+        });
+        controlsColumn.addButton("Remove height", new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                uploadSelect.setHeight(null);
+            }
+        });
+        controlsColumn.addButton("Set blue 5px border", new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                uploadSelect.setBorder(new Border(5, Color.BLUE, Border.STYLE_SOLID));
+            }
+        });
+        controlsColumn.addButton("Remove border", new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                uploadSelect.setBorder(null);
             }
         });
 

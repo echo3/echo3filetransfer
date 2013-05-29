@@ -1,0 +1,75 @@
+<ss>
+    <s n="StyledButton" t="Button">
+        <p n="font" t="Font">
+            <f sz="11px">
+                <tf>Verdana</tf>
+            </f>
+        </p>
+        <p n="formatWhitespace" t="b">true</p>
+        <p n="width" t="i">65</p>
+        <p n="insets" t="i">5px 7px 5px 7px</p>
+        <p n="alignment" t="Alignment">
+            <a h="center" v="center"/>
+        </p>
+        <p n="focusedBorder" t="Border">1px solid #516c84</p>
+        <p n="border" t="Border">1px solid #586c7d</p>
+        <p n="foreground">#334454</p>
+        <p n="background">#c8d3dd</p>
+        <p n="backgroundImage" t="FillImage">
+            <fi t="r" r="x" x="0px" y="0px" u="button_gradient.png"/>
+        </p>
+        <p n="disabledForeground">#4E555C</p>
+    </s>
+
+    <s n="StyledUpload" t="FileTransfer.MultipleUploadSelect">
+        <p n="font" t="Font">
+            <f sz="11px">
+                <tf>Verdana</tf>
+            </f>
+        </p>
+        <p n="formatWhitespace" t="b">true</p>
+        <p n="width" t="i">65</p>
+        <p n="insets" t="i">5px 7px 5px 7px</p>
+        <p n="alignment" t="Alignment">
+            <a h="center" v="center"/>
+        </p>
+        <p n="border" t="Border">1px solid #586c7d</p>
+        <p n="foreground">#334454</p>
+        <p n="background">#c8d3dd</p>
+        <p n="backgroundImage" t="FillImage">
+            <fi t="r" r="x" x="0px" y="0px" u="button_gradient.png"/>
+        </p>
+    </s>
+
+    <s n="StyledUpload" t="FileTransfer.UploadSelect">
+        <p n="font" t="Font">
+            <f sz="16px">
+                <tf>Verdana</tf>
+            </f>
+        </p>
+        <p n="insets" t="i">5px</p>
+        <p n="border" t="Border">5px solid #ff0000</p>
+        <p n="background">#c8d3dd</p>
+    </s>
+
+
+    <s n="Default" t="Button">
+        <p t="Border" n="border">2px groove #00ff00</p>
+        <p t="b" n="rolloverEnabled">true</p>
+        <p n="rolloverBackground">#afffaf</p>
+        <p t="b" n="pressedEnabled">true</p>
+        <p n="pressedBackground">#ffafff</p>
+        <p n="foreground">#00007f</p>
+        <p n="insets">5px</p>
+    </s>
+
+    <s n="DefaultSpaced" t="Row">
+        <p n="cellSpacing">5px</p>
+        <p n="padding">5px</p>
+    </s>
+
+    <s n="DefaultResizable" t="SplitPane">
+        <p t="b" n="resizable">true</p>
+    </s>
+
+</ss>

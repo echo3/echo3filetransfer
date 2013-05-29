@@ -273,6 +273,14 @@ FileTransfer.Sync.DefaultUploadRender = Core.extend(FileTransfer.Sync.UploadRend
         this._fileInput = document.createElement("input");
         this._fileInput.type = "file";
         this._fileInput.name = this.peer.component.renderId;
+
+        // Basic styling properties
+        var component = this.peer.component;
+        Echo.Sync.renderComponentDefaults(component, this._fileInput);
+        Echo.Sync.Border.render(component.render("border"), this._fileInput);
+        Echo.Sync.Insets.render(component.render("insets"), this._fileInput, "margin");
+        Echo.Sync.Alignment.render(component.render("alignment"), this._fileInput, true, component);
+
         this._form.appendChild(this._fileInput);
         
         Core.Web.Event.add(this._fileInput, "change", Core.method(this, function() {
