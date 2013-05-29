@@ -218,6 +218,7 @@ implements UploadProcessor {
             
             uploadProcess = UploadProcessManager.get(request, id, true);
             uploadProcess.addProcessListener(uploadProcessListener);
+            currentUpload = null;
             try {
                 FileItemIterator iter = sfu.getItemIterator(request);
                 int uploadIndex = 0;
@@ -240,6 +241,13 @@ implements UploadProcessor {
                     }
                 }
             } catch (SizeLimitExceededException ex) {
+                if (currentUpload == null) {
+                    /* If currentUpload is null, the SizeLimitExceededException was thrown
+                       because the fileupload library detected that the content length specified
+                       in the request's header is too large, before any upload objects could be created.
+                       In this case, create a dummy Upload object to set the status on to inform the listeners.*/
+                    uploadProcess.createUpload();
+                }
                 uploadProcess.setStatus(Upload.STATUS_ERROR_OVERSIZE);
             } catch (IOException ex) {
                 uploadProcess.setStatus(Upload.STATUS_ERROR_IO);
