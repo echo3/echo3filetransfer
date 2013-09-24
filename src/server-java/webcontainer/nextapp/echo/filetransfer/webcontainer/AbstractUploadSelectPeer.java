@@ -89,6 +89,24 @@ public abstract class AbstractUploadSelectPeer extends AbstractComponentSynchron
                 return true;
             }
         });
+        addEvent(new EventPeer(AbstractUploadSelect.INPUT_UPLOAD_SEND, AbstractUploadSelect.UPLOAD_LISTENERS_CHANGED_PROPERTY) {
+            /**
+             * @see nextapp.echo.webcontainer.AbstractComponentSynchronizePeer.EventPeer#processEvent(
+             *      nextapp.echo.app.util.Context, nextapp.echo.app.Component, java.lang.Object)
+             */
+            public void processEvent(Context context, Component component, Object eventData) {
+                Connection conn = (Connection) context.get(Connection.class);
+                super.processEvent(context, component, eventData);
+            }
+
+            /**
+             * @see nextapp.echo.webcontainer.AbstractComponentSynchronizePeer.EventPeer#hasListeners(
+             *      nextapp.echo.app.util.Context, nextapp.echo.app.Component)
+             */
+            public boolean hasListeners(Context context, Component c) {
+                return true;
+            }
+        });
     }
 
     /**
