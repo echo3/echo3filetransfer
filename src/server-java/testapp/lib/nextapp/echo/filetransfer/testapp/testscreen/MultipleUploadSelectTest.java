@@ -216,6 +216,11 @@ public class MultipleUploadSelectTest extends SplitPane {
                 } 
 
             }
+
+            @Override
+            public void uploadSend() {
+                InteractiveApp.getApp().consoleWrite("Upload SEND");
+            }
         });
         testColumn.add(uploadSelect);
         add(testColumn);

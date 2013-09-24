@@ -98,7 +98,7 @@ FileTransfer.AbstractUploadSelect = Core.extend(Echo.Component, {
             return;
         }
         this.sending = true;
-        this.fireEvent({ source: this, type: "uploadSend" });
+        this.fireEvent({ source: this, type: "uploadSend", data: this.processId });
     }
 });
 

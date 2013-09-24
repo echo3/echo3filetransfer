@@ -50,6 +50,7 @@ public abstract class AbstractUploadSelect extends Component {
     
     public static final String UPLOAD_LISTENERS_CHANGED_PROPERTY = "uploadListeners";
     public static final String UPLOAD_PROGRESS_LISTENERS_CHANGED_PROPERTY = "uploadProgressListeners";
+    public static final String INPUT_UPLOAD_SEND = "uploadSend";
     public static final String INPUT_UPLOAD_COMPLETE = "uploadComplete";
 
     public static final String PROPERTY_INSETS = "insets";
@@ -139,6 +140,16 @@ public abstract class AbstractUploadSelect extends Component {
             ((UploadListener) listeners[i]).uploadComplete(e);
         }
     }
+
+    /**
+     * Provides notification that the component now starts with an upload.
+     */
+    public void doUploadSend() {
+        EventListener[] listeners = getEventListenerList().getListeners(UploadListener.class);
+        for (int i = 0; i < listeners.length; ++i){
+            ((UploadListener) listeners[i]).uploadSend();
+        }
+    }
     
     /**
      * Provides notification that the specified upload has progressed.
@@ -199,6 +210,8 @@ public abstract class AbstractUploadSelect extends Component {
             for (int i = 0; i < uploads.length; ++i) {
                 doUploadComplete(uploads[i]);
             }
+        } else if (INPUT_UPLOAD_SEND.equals(inputName)) {
+            doUploadSend();
         }
     }
     
