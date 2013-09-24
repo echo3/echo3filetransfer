@@ -144,6 +144,8 @@ implements Service {
         } else {
             response.setContentType(provider.getContentType());
         }
+        response.setHeader("Cache-Control", "");
+        response.setHeader("Pragma", "");
         provider.writeFile(out);
     }
 
